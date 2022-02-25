@@ -6,7 +6,7 @@ export default {
   head: {
     title: 'front',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'fr'
     },
     meta: [
       { charset: 'utf-8' },
@@ -42,5 +42,9 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
+  },
+
+  server: {
+    port: 4500,
   }
 }
