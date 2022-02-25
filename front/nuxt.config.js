@@ -6,7 +6,7 @@ export default {
   head: {
     title: 'front',
     htmlAttrs: {
-      lang: 'en'
+      lang: 'fr'
     },
     meta: [
       { charset: 'utf-8' },
@@ -46,4 +46,5 @@ export default {
   server: {
     port: 4500,
   }
+  
 }
