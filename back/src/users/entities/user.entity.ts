@@ -1,4 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Exclude } from "class-transformer";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+
+export enum UserRole {ADMIN="A",CUSTOMER="C"}
 
 @Entity()
 export class User {
@@ -15,7 +18,12 @@ export class User {
     @Column({length:300})
     mail!: string;
 
+    @Exclude()
     @Column({length: 255})
     password !: string;
+
+    @Index()
+    @Column({type:"enum", enum:UserRole})
+    role!: UserRole;
 
 }
