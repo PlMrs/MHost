@@ -5,6 +5,7 @@ import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { SignInDto } from 'src/auth/token/dto/signin-user.dto';
+import { ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
 
 @Controller('auth/token')
 export class TokenController {
@@ -13,6 +14,12 @@ export class TokenController {
         private jwts: JwtService
     ){}
 
+    @ApiOperation({description: "Authentifier un utilisateur"})
+    @ApiUnauthorizedResponse({ description: "Authentification failed"})
+    @ApiOkResponse({
+        description: "Authentifié en tant qu'utilisateur",
+        type: SignInDto
+    })
     @UseGuards(AuthGuard('basic'))
     @Get()
     async signIn(@Headers("Authorization") auth : string) {
