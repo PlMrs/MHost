@@ -19,13 +19,15 @@
         submit(event){
             event.preventDefault();
             const mdp64 = Buffer.from(`${this.email}:${this.mdp}`).toString('base64');
-           axios.get('http://localhost:3000/auth/token',{ 
-               headers: { 
-                'Authorization': `Basic ${mdp64}`,
-                'Content-Type' : 'application/json' 
-                }
-            }).then(res=>{
-                console.log(res)
+            axios.get(process.env.API_URL + '/auth/token',{ 
+                headers: { 
+                    'Authorization': `Basic ${mdp64}`,
+                    'Content-Type' : 'application/json' 
+                    }
+                }).then(res=>{
+                    console.log(res)
+                }).catch(e=>{
+                    this.$emit('error', e.response.data.message)
             })
         }
     },

@@ -3,11 +3,12 @@
     <div class="shadow-lg rounded-lg p-5">
         <h1 class="font-bold text-lg">Connexion</h1>
         <div> 
-            <Connexion v-if="!show" />
-            <Inscription v-if="show" />
+            <Connexion @error="errorHandler" v-if="!show" />
+            <Inscription @error="errorHandler" v-if="show" />
         </div>  
         <p @click="toggle" v-if="!show">S'inscrire ?</p>
-        <p @click="toggle" v-if="show">Se connecter</p>
+        <p @click="toggle" v-if="show"></p>
+        <p v-if="showError">{{errorValue}}</p>
     </div>
 </div>
 </template>
@@ -22,11 +23,17 @@ import Inscription from "~/components/login/Inscription.vue";
     data() {
         return {
             show : false,
+            showError: false,
+            errorValue: null,
         }
     },
     methods:{
         toggle() {
             this.show = !this.show;
+        },
+        errorHandler(value){
+            this.showError = true;
+            this.errorValue = value;
         }
     },
     components: { Connexion, Inscription }

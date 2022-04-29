@@ -9,7 +9,7 @@ export class SignInDto {
     grant_type: string = "password";
 
     @ApiProperty()
-    expires_in:number;
+    expires_in:number | string;
 
     @ApiProperty()
     scope: string = "*";

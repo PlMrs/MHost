@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Controller, Get, Headers, HttpException, HttpStatus, UnauthorizedException, UseGuards } from '@nestjs/common';
 
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
@@ -20,7 +20,6 @@ export class TokenController {
         description: "Authentifié en tant qu'utilisateur",
         type: SignInDto
     })
-    @UseGuards(AuthGuard('basic'))
     @Get()
     async signIn(@Headers("Authorization") auth : string) {
         let args = auth && auth.split(" ");
@@ -29,20 +28,23 @@ export class TokenController {
             const email = credentials[0];
             const password = credentials[1];
             const user = await this.users.findByEmail(email);
-            console.log(user);
+
             if(user && await bcrypt.compare(password, user.password)){
                 const cr = new SignInDto();
                 cr.grant_type = "password";
                 cr.scope = "*";
-                cr.expires_in = 3600;
+                cr.expires_in = "1d";
                 cr.access_token = await this.jwts.sign({
                     id: user.id,
                     role: user.role
                 },{
-                    subject: user.mail,
+                    subject: user.email,
                     expiresIn: "1h"
                 });
                 return cr;
+            }
+            else{
+                throw new HttpException('Connexion impossible, utilisateur ou mot de passe incorrect', HttpStatus.UNAUTHORIZED)
             }
         }
         throw new UnauthorizedException("Invalid or missing Basic credential ");

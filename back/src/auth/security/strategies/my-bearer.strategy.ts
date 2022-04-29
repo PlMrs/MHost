@@ -8,7 +8,7 @@ export class MyBearerStrategy extends PassportStrategy(Strategy){
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
-            secretOrKey: process.env.JWT_SECRET||"MyDigitalSchool Lyon cest top",
+            secretOrKey: process.env.JWT_SECRET,
         });
     }
 

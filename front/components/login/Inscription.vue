@@ -1,16 +1,63 @@
 <template lang="">
-    <form action="" class="flex flex-col">
-        <input type="text" placeholder="nom" class="py-2.5" required>
-        <input type="text" placeholder="prenom"class="py-2.5" required>
-        <input type="email" name="email" placeholder="email" class="py-2.5" required>
-        <input type="email" name="confirm-mail" placeholder="Confirmation de l'adresse mail"  class="py-2.5"required>
-        <input type="password" name="password" placeholder="Mot de passe" class="py-2.5" required>
-        <input type="password" name="confirm-password" placeholder="Confirmation du mot de passe" class="py-2.5" required>
-        <input type="submit" value="S'enregistrer">
+    <form action="" class="flex flex-col" @submit="submit">
+        <input type="text" name="nom" v-model="nom" placeholder="nom" class="py-2.5" required>
+        <input type="text" name="prenom" v-model="prenom" placeholder="prenom"class="py-2.5" required>
+        <input type="email" name="email" v-model="email" placeholder="email" class="py-2.5" required>
+        <input type="email" name="confirm-mail" v-model="confirmEmail" placeholder="Confirmation de l'adresse mail"  class="py-2.5"required>
+        <input type="password" name="password" v-model="password" placeholder="Mot de passe" class="py-2.5" required>
+        <input type="password" name="confirm-password" v-model="confirmPassword" placeholder="Confirmation du mot de passe" class="py-2.5" required>
+        <button type="submit" name="submit">S'enregistrer</button>
     </form>
 </template>
 <script>
+import * as bcrypt from 'bcryptjs';
+import axios from 'axios';
 export default {
-   
+    data() {
+        return {
+        nom:null,
+        prenom:null,
+        email:null,
+        confirmEmail:null,
+        password:null,
+        confirmPassword:null
+        }
+    },
+   methods:{
+       submit(event){
+           event.preventDefault();
+           let nom = this.nom;
+           let prenom = this.prenom;
+           let email = this.email;
+           let confirmEmail = this.confirmEmail;
+           let password = this.password;
+           let confirmPassword = this.confirmPassword;
+           let passwordHash
+
+           if(nom === null || prenom === null || email === null || confirmEmail === null || password === null || confirmPassword === null){
+                return this.$emit('error', 'Veuillez remplir tout les champs de formulaires')
+           }
+           if(email != confirmEmail){
+               return this.$emit('error', 'Les adresses E-mail ne sont pas identiques')
+           }
+           if(password != confirmPassword){
+               return this.$emit('error', 'Les mots de passes ne sont pas identiques')
+           }
+
+            bcrypt.genSalt(Number(process.env.BCRYPT_SALT), function(err, salt) {
+            bcrypt.hash(password, salt, function(err, hash) {
+                axios.post(process.env.API_URL + '/users',{
+                    "name": nom,
+                    "surname": prenom,
+                    "email": email,
+                    "password": hash,
+                }).then(res=>{
+                    console.log(res)
+                }).catch(e=>{
+                    this.$emit('error', e.response.data.message)
+                })
+            })
+            })       }
+   }
 }
 </script>

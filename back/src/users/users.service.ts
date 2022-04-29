@@ -10,8 +10,8 @@ export class UsersService {
 
   constructor(@InjectRepository(User) private data: Repository<User>){}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  create(createUserDto: CreateUserDto): Promise<User> {
+    return this.data.save(createUserDto);
   }
 
   findAll(): Promise<User[]> {
@@ -24,8 +24,8 @@ export class UsersService {
     });
   }
 
-  findByEmail(mail: string): Promise<User>{
-    return this.data.findOne({ mail });
+  findByEmail(email: string): Promise<User>{
+    return this.data.findOne({ email });
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {
