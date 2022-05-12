@@ -35,5 +35,10 @@ export class User {
 
     @Column({type:"enum", enum:UserNeeds, default: UserNeeds.DISCUTE})
     needs?: UserNeeds;
+    
+    /*@Column({ nullable: true })
+    @Exclude()
+    refresh_token?: string;*/
+
 
 }

@@ -25,7 +25,9 @@
                     'Content-Type' : 'application/json' 
                     }
                 }).then(res=>{
-                    console.log(res)
+                    if(res.status === 200){
+                        
+                    }
                 }).catch(e=>{
                     this.$emit('error', e.response.data.message)
             })
