@@ -8,7 +8,6 @@
      </form>
 </template>
 <script>
-    import axios from 'axios';
     export default {
     data() {
         return{
@@ -16,20 +15,14 @@
         mdp:null}
     },
     methods: {
-        submit(event){
+        async submit(event){
             event.preventDefault();
-            const mdp64 = Buffer.from(`${this.email}:${this.mdp}`).toString('base64');
-            axios.get(process.env.API_URL + '/auth/token',{ 
-                headers: { 
-                    'Authorization': `Basic ${mdp64}`,
-                    'Content-Type' : 'application/json' 
-                    }
-                }).then(res=>{
-                    if(res.status === 200){
-                        
-                    }
-                }).catch(e=>{
-                    this.$emit('error', e.response.data.message)
+            const mdp64 = `Basic ${Buffer.from(`${this.email}:${this.mdp}`).toString('base64')}`;
+            console.log(mdp64)
+            this.$auth.loginWith('local',{
+                data:{
+                    "Authorization" : mdp64
+                }
             })
         }
     },

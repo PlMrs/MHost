@@ -1,4 +1,4 @@
-import { Controller, Get, Headers, HttpException, HttpStatus, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpException, HttpStatus, Post, UnauthorizedException, UseGuards } from '@nestjs/common';
 
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
@@ -6,9 +6,11 @@ import { JwtService, JwtSignOptions } from '@nestjs/jwt';
 import { AuthGuard } from '@nestjs/passport';
 import { SignInDto } from 'src/auth/token/dto/signin-user.dto';
 import { ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
-import { User } from 'src/users/entities/user.entity';
+import { User, UserRole } from 'src/users/entities/user.entity';
+import { RolesGuard } from '../security/roles.guard';
+import { Roles } from '../security/roles.decorator';
 
-@Controller('auth/token')
+@Controller('auth')
 export class TokenController {
     constructor(
         private users: UsersService,
@@ -21,8 +23,8 @@ export class TokenController {
         description: "Authentifié en tant qu'utilisateur",
         type: SignInDto
     })
-    @Get()
-    async signIn(@Headers("Authorization") auth : string) {
+    @Post('/token')
+    async signIn(@Body("Authorization") auth : string) {
         let args = auth && auth.split(" ");
         if(args && args.length == 2 && args[0] == "Basic") {
             const credentials = Buffer.from(args[1], "base64").toString("utf8").split(":");
@@ -52,60 +54,26 @@ export class TokenController {
         
     }
 
-    /*@Get("/refresh")
-    async createAccessTokenFromRefreshToken (refreshToken: string){
 
-        try{
-            const decoded: any = this.jwts.decode(refreshToken) ;
-            if (!decoded) {
-                throw new Error();
-            }
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN,UserRole.CUSTOMER)
+  @Get('/session')
+  async getSession(@Headers("Authorization") token : string): Promise<User | any>{
+    let args = token && token.split(" ");
+    if(args && args.length == 2 && args[0] == "Bearer") {
 
-            const user = await this.users.findByEmail(decoded.sub);
-            if (!user) {
-                throw new HttpException('User with this id does not exist', HttpStatus.NOT_FOUND);
-            }
+      const jwt = token.split(" ")[1]
+      
+      try{
+        const decoded = await this.jwts.verify(jwt, {secret : process.env.JWT_SECRET });
 
-            const isRefreshTokenMatching = await bcrypt.compare(refreshToken, user.refresh_token);
-            if (!isRefreshTokenMatching) {
-                throw new UnauthorizedException('Invalid token');
-            }
-
-            await this.jwts.verifyAsync(refreshToken, this.getRefreshTokenOptions(user));
-            return this.login(user);
-        }catch{
-            throw new UnauthorizedException('Invalid Token');
-        }
-    }
-
-    getRefreshTokenOptions(user: User): JwtSignOptions {
-        return this.getTokenOptions('refresh', user);
+        const u = await this.users.findOne(decoded.id)
+        return { user : u}
+      }catch(e){
+          return e
       }
-      private getTokenOptions(type: string, user: User) {
-        const options: JwtSignOptions = {
-          secret: process.env.REFRESH_TOKEN_SECRET,
-        };
-        const expiration: string = process.env.REFRESH_TOKEN_EXPIRATION;
-        if (expiration) {
-          options.expiresIn = expiration;
-        }
-        return options;
+
     }
+  }
 
-    async login(user: User){
-        const cr = new SignInDto();
-        cr.grant_type = "password";
-        cr.scope = "*";
-        cr.expires_in = "1h";
-        cr.access_token = await this.jwts.sign({
-            id: user.id,
-            role: user.role
-        },{
-            subject: user.email,
-            expiresIn: "1h"
-        });
-        return cr;
-    }*/
-
-    
 }

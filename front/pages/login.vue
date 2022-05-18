@@ -7,7 +7,7 @@
             <Inscription @error="errorHandler" v-if="show" />
         </div>  
         <p @click="toggle" v-if="!show">S'inscrire ?</p>
-        <p @click="toggle" v-if="show"></p>
+        <p @click="toggle" v-if="show">Se connecter</p>
         <p v-if="showError">{{errorValue}}</p>
     </div>
 </div>

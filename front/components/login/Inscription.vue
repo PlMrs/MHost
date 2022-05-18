@@ -11,7 +11,6 @@
 </template>
 <script>
 import * as bcrypt from 'bcryptjs';
-import axios from 'axios';
 export default {
     data() {
         return {
@@ -24,8 +23,10 @@ export default {
         }
     },
    methods:{
-       submit(event){
+       async submit(event){
            event.preventDefault();
+
+           let hash = ""
            let nom = this.nom;
            let prenom = this.prenom;
            let email = this.email;
@@ -45,19 +46,21 @@ export default {
            }
 
             bcrypt.genSalt(Number(process.env.BCRYPT_SALT), function(err, salt) {
-            bcrypt.hash(password, salt, function(err, hash) {
-                axios.post(process.env.API_URL + '/users',{
+            bcrypt.hash(password, salt, function(err, hsh) {
+                hash = hsh
+            })
+
+            const res = await this.$axios.post(`${this.$axios.baseUrl}/users` ,{
                     "name": nom,
                     "surname": prenom,
                     "email": email,
                     "password": hash,
-                }).then(res=>{
-                    console.log(res)
-                }).catch(e=>{
-                    this.$emit('error', e.response.data.message)
                 })
-            })
-            })       }
+
+            console.log(res)
+                
+            })       
+        }
    }
 }
 </script>

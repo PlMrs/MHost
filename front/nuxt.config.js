@@ -23,7 +23,6 @@ export default {
   css: [
     '@/assets/css/main.css'
   ],
-
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
   ],
@@ -56,6 +55,27 @@ export default {
   },
   server: {
     port: 4500,
+  },
+  axios: {
+    baseURL: 'http://localhost:3000/'
+  },
+  auth: {
+    strategies: {
+      local: {
+        endpoints : {
+          login: {url:'/auth/token', method: 'post', propertyName: 'access_token'},
+          user: {url:'/auth/session', method : 'get', propertyName: 'user'}
+        },
+        tokenType: 'Bearer'
+      },
+      redirect: {
+        login: '/login',
+        user : '/dashboard',
+        logout: '/',
+        callback: '/login',
+        home: '/dashboard'
+      },
+    }
   }
   
 }
