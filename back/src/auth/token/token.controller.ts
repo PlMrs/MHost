@@ -58,22 +58,22 @@ export class TokenController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN,UserRole.CUSTOMER)
   @Get('/session')
-  async getSession(@Headers("Authorization") token : string): Promise<User | any>{
-    let args = token && token.split(" ");
-    if(args && args.length == 2 && args[0] == "Bearer") {
+  async getSession(@Headers("Authorization") token : string): Promise<{user : User}>{
 
-      const jwt = token.split(" ")[1]
+    const jwt = token.split(" ")[1]
       
-      try{
-        const decoded = await this.jwts.verify(jwt, {secret : process.env.JWT_SECRET });
+    try{
 
-        const u = await this.users.findOne(decoded.id)
+        const {id} : any = this.jwts.verify(jwt, {secret : process.env.JWT_SECRET});
+
+        const u = await this.users.findOne(id)
+
         return { user : u}
-      }catch(e){
-          return e
-      }
 
+    }catch(e){
+        return e
     }
+      
   }
 
 }

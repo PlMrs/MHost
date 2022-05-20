@@ -22,7 +22,7 @@ export class UsersController {
   }
 
 
-  @ApiOperation({description: "Liste de toutes les utilisateurs"})
+  @ApiOperation({description: "Liste de tous les utilisateurs"})
   @ApiOkResponse({
     description: "Tous les utilisateurs",
     type: [User],
