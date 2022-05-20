@@ -47,11 +47,18 @@ export default {
             const passwordHashed = bcrypt.hashSync(password, salt);
 
             try{
-                 const res = await this.$axios.$post(`${process.env.API_URL}/users` ,{
+                const res = await this.$axios.$post(`${process.env.API_URL}/users` ,{
                     "name": nom,
                     "surname": prenom,
                     "email": email,
                     "password": passwordHashed,
+                })
+
+                const mdp64 = `Basic ${Buffer.from(`${email}:${password}`).toString('base64')}`;
+                await this.$auth.loginWith('local',{
+                    data:{
+                        "Authorization" : mdp64
+                    }
                 })
             }catch(e){
                 return this.$emit('error', e.response.data.message)

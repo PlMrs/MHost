@@ -18,8 +18,10 @@ export class UsersController {
   })
   @Post()
   async create(@Body() dto: CreateUserDto): Promise<User> {
+    
+    const isExisted = await this.usersService.findByEmail(dto.email)
 
-    if(this.usersService.findByEmail(dto.email)){
+    if(isExisted){
       throw new HttpException('User already exist',HttpStatus.UNAUTHORIZED)
     }
 
