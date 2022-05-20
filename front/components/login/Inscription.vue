@@ -26,14 +26,12 @@ export default {
        async submit(event){
            event.preventDefault();
 
-           let hash = ""
            let nom = this.nom;
            let prenom = this.prenom;
            let email = this.email;
            let confirmEmail = this.confirmEmail;
            let password = this.password;
            let confirmPassword = this.confirmPassword;
-           let passwordHash
 
            if(nom === null || prenom === null || email === null || confirmEmail === null || password === null || confirmPassword === null){
                 return this.$emit('error', 'Veuillez remplir tout les champs de formulaires')
@@ -45,21 +43,20 @@ export default {
                return this.$emit('error', 'Les mots de passes ne sont pas identiques')
            }
 
-            bcrypt.genSalt(Number(process.env.BCRYPT_SALT), function(err, salt) {
-            bcrypt.hash(password, salt, function(err, hsh) {
-                hash = hsh
-            })
+            const salt =  bcrypt.genSaltSync(Number(process.env.BCRYPT_SALT))
+            const passwordHashed = bcrypt.hashSync(password, salt);
 
-            const res = await this.$axios.post(`${this.$axios.baseUrl}/users` ,{
+            try{
+                 const res = await this.$axios.$post(`${process.env.API_URL}/users` ,{
                     "name": nom,
                     "surname": prenom,
                     "email": email,
-                    "password": hash,
+                    "password": passwordHashed,
                 })
-
-            console.log(res)
-                
-            })       
+            }catch(e){
+                return this.$emit('error', e.response.data.message)
+            }
+                      
         }
    }
 }

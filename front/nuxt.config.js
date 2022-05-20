@@ -57,7 +57,7 @@ export default {
     port: 4500,
   },
   axios: {
-    baseURL: 'http://localhost:3000/'
+    baseURL: 'http://localhost:3000'
   },
   auth: {
     strategies: {

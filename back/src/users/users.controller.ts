@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -17,7 +17,12 @@ export class UsersController {
     type: User,
   })
   @Post()
-  create(@Body() dto: CreateUserDto) {
+  async create(@Body() dto: CreateUserDto): Promise<User> {
+
+    if(this.usersService.findByEmail(dto.email)){
+      throw new HttpException('User already exist',HttpStatus.UNAUTHORIZED)
+    }
+
     return this.usersService.create(dto);
   }
 

@@ -2,8 +2,8 @@
     <header class="fixed w-full p-4 bg-white">
         <nav v-if="$auth.loggedIn">
             <ul class="flex flex-row justify-evenly">
-                <li><NuxtLink to="/user">Accueil</NuxtLink></li>
-                <li>Rechercher</li>
+                <li><NuxtLink to="/">Accueil</NuxtLink></li>
+                <li><NuxtLink to="/dashboard">Dashboard</NuxtLink></li>
                 <li>Messagerie</li>
                 <li><v-btn @click="$auth.logout()">Déconnexion</v-btn></li>
             </ul>

@@ -17,13 +17,17 @@
     methods: {
         async submit(event){
             event.preventDefault();
-            const mdp64 = `Basic ${Buffer.from(`${this.email}:${this.mdp}`).toString('base64')}`;
-            console.log(mdp64)
-            this.$auth.loginWith('local',{
-                data:{
-                    "Authorization" : mdp64
-                }
-            })
+
+            try{
+                const mdp64 = `Basic ${Buffer.from(`${this.email}:${this.mdp}`).toString('base64')}`;
+                const response = await this.$auth.loginWith('local',{
+                    data:{
+                        "Authorization" : mdp64
+                    }
+                })
+            }catch(e){
+                this.$emit('error', e.response.data.message)
+            }
         }
     },
     }
