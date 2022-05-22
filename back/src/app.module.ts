@@ -5,6 +5,9 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
+import { SwipeController } from './swipe/swipe.controller';
+import { SwipeService } from './swipe/swipe.service';
+import { SwipeModule } from './swipe/swipe.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -18,8 +21,8 @@ import { AuthModule } from './auth/auth.module';
     database: process.env.DB_NAME,
     autoLoadEntities: true,
     synchronize: true
-  }),UsersModule, AuthModule],
-  controllers: [AppController],
-  providers: [AppService],
+  }),UsersModule, AuthModule, SwipeModule],
+  controllers: [AppController, SwipeController],
+  providers: [AppService, SwipeService],
 })
 export class AppModule {}

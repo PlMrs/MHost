@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
-import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
+import { Swipe } from "src/swipe/entities/swipe.entity";
+import { Column, Entity, Index, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserRole {ADMIN="A",CUSTOMER="C"}
 
@@ -10,6 +11,8 @@ export enum UserNeeds {TRAVEL="T", HOST="H",DISCUTE="D", ALL="A"}
 export class User {
     
     @PrimaryGeneratedColumn()
+    @OneToMany(()=> Swipe, swipe => swipe.user_1)
+    @OneToMany(()=> Swipe, swipe => swipe.user_2)
     id!: number;
 
     @ApiProperty()
@@ -36,8 +39,11 @@ export class User {
     @Column({type:"enum", enum:UserNeeds, default: UserNeeds.DISCUTE})
     needs?: UserNeeds;
     
-    @Column()
+    @Column({default: "default.jpg"})
     picture?: string;
+
+    @Column({length: 255, nullable: true})
+    description?: string;
 
 
 }
