@@ -37,7 +37,6 @@ export default {
         isDescShow : false
     }),
     created() {
-        console.log(this.$auth)
         this.mock()
     },
     methods: {
@@ -65,10 +64,28 @@ export default {
                 this.queue.unshift(...list);
             }
         },
-        onSubmit(type, key, item) {
+        async onSubmit(type, key, item) {
         // type: result，'like': swipe right, 'nope': swipe left, 'super': swipe up
         // key:  The keyName of the removed card
         // item: Child object in queue
+
+        const swipeData = {
+            "user_1" : this.$auth.$state.user.id,
+            "user_2" : type.key
+        }
+
+        if(type.type === "like"){
+
+            const res = await this.$axios.$post(`${process.env.API_URL}/swipe`,swipeData,{
+                headers : {
+                    "Authorization" : this.$auth.$storage._state["_token.local"],
+                    "Content-Type" : "application/json"
+                }
+            })
+
+            console.log(res)
+        }
+
         if (this.queue.length < 3) {
             this.mock()
         }

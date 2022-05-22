@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Not, Repository } from 'typeorm';
+import { Swipe } from 'src/swipe/entities/swipe.entity';
+import { In, Not, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserRole } from './entities/user.entity';
@@ -8,7 +9,9 @@ import { User, UserRole } from './entities/user.entity';
 @Injectable()
 export class UsersService {
 
-  constructor(@InjectRepository(User) private data: Repository<User>){}
+  constructor(@InjectRepository(User) private data: Repository<User>,
+              @InjectRepository(Swipe) private swipe: Repository<Swipe>
+              ){}
 
   create(createUserDto: CreateUserDto): Promise<User> {
     return this.data.save(createUserDto);
@@ -18,8 +21,23 @@ export class UsersService {
     return this.data.find();
   }
 
-  findAllPictureNeeds(id : number): Promise<User[]>{
-     return this.data.find({select : ["id","name", "surname","needs","picture","description"], where : {role: Not(UserRole.ADMIN), id: Not(id) }})
+  async findAllPictureNeeds(id : number): Promise<User[]>{
+
+    let array = [];
+
+    array.push(Number(id))
+
+    const ids = await this.swipe.find({select : ["user_2"], where : {
+      user_1 : id
+    }})
+
+    ids.map(id => array.push(id.user_2) )
+
+    return this.data.find({select : ["id","name", "surname","needs","picture","description"],
+    where : {role: Not(UserRole.ADMIN), 
+              id: Not(In(array)),
+            }
+    })
   }
 
   findOne(id: number): Promise<User> {

@@ -9,13 +9,20 @@ export class Swipe {
     @PrimaryGeneratedColumn()
     id!: number;
 
+
+    @Column()
+    user_1 : User
+
+    @Column()
+    user_2 : User
+
     @ManyToOne(()=> User, user => user.id)
     @JoinColumn({name: "user_1"})
-    user_1!: User
+    user_1id!: User
 
     @ManyToOne(()=> User, user => user.id)
     @JoinColumn({name: "user_2"})
-    user_2!: User
+    user_2id!: User
 
     @Column({default: false})
     isMatched?: boolean;

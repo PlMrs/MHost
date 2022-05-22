@@ -6,6 +6,7 @@ import { SwipeService } from './swipe.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Swipe])],
+    exports: [TypeOrmModule],
     controllers: [SwipeController],
     providers: [SwipeService]
 })
