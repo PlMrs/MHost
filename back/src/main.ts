@@ -25,6 +25,7 @@ async function bootstrap() {
   .setDescription('Description de l\'utilisation de l\'api Mhost')
   .setVersion('0.1')
   .addTag('mhost')
+  .addBearerAuth()
   .build();
 
   const document = SwaggerModule.createDocument(app, config);

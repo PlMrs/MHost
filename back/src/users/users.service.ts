@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { User } from './entities/user.entity';
+import { User, UserRole } from './entities/user.entity';
 
 @Injectable()
 export class UsersService {
@@ -16,6 +16,10 @@ export class UsersService {
 
   findAll(): Promise<User[]> {
     return this.data.find();
+  }
+
+  findAllPictureNeeds(): Promise<User[]>{
+     return this.data.find({select : ["id","name", "surname","needs","picture"], where : {role: Not(UserRole.ADMIN)}})
   }
 
   findOne(id: number): Promise<User> {

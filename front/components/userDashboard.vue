@@ -1,6 +1,7 @@
 <template lang="">
-    <div>
-        <h1>UserDashBoard</h1>
+    <div class="flex">
+        <UserSidebar />
+        <UserSwipe />
     </div>
 </template>
 <script>

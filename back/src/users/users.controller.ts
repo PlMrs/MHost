@@ -41,6 +41,13 @@ export class UsersController {
     return this.usersService.findAll();
   }
 
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
+  @Get('swipe')
+  findAllPictureNeeds(): Promise<User[]> {
+    return this.usersService.findAllPictureNeeds();
+  }
+
   @ApiOperation({description: "Affiche un utilisateur grace à son id"})
   @ApiNotFoundResponse({ description: "L'utilisateur n'a pas été trouvé"})
   @ApiOkResponse({

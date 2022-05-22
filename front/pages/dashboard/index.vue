@@ -1,11 +1,11 @@
 <template lang="">
     <div style="padding-top: 100px">
         <div v-if="checkAdmin">
-          <adminDashboard />
+          <AdminDashboard />
         <p>{{checkAdmin}}</p>
         </div>
         <div v-else>
-          <userDashboard />
+          <UserDashboard />
         </div>
     </div>
 </template>
@@ -15,6 +15,8 @@ export default {
 
   computed: {
     checkAdmin() {
+      console.log(this.$auth)
+      console.log(this.$auth.$storage._state["_token.local"])
       if(this.$auth.$state.user.role === "A" && this.$auth.loggedIn){
         return true
       }
