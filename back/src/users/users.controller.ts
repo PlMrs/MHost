@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus, Headers } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -44,8 +44,8 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
   @Get('swipe')
-  findAllPictureNeeds(): Promise<User[]> {
-    return this.usersService.findAllPictureNeeds();
+  findAllPictureNeeds(@Headers('user_id') id: number): Promise<User[]> {
+    return this.usersService.findAllPictureNeeds(id);
   }
 
   @ApiOperation({description: "Affiche un utilisateur grace à son id"})

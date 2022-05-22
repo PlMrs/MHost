@@ -18,8 +18,8 @@ export class UsersService {
     return this.data.find();
   }
 
-  findAllPictureNeeds(): Promise<User[]>{
-     return this.data.find({select : ["id","name", "surname","needs","picture","description"], where : {role: Not(UserRole.ADMIN)}})
+  findAllPictureNeeds(id : number): Promise<User[]>{
+     return this.data.find({select : ["id","name", "surname","needs","picture","description"], where : {role: Not(UserRole.ADMIN), id: Not(id) }})
   }
 
   findOne(id: number): Promise<User> {

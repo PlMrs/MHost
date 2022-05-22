@@ -37,15 +37,17 @@ export default {
         isDescShow : false
     }),
     created() {
+        console.log(this.$auth)
         this.mock()
     },
     methods: {
         async mock(count = 5, append = true) {
 
             const res = await this.$axios.$get(`${process.env.API_URL}/users/swipe`,{
-            headers : {
-                    "Authorization" : this.$auth.$storage._state["_token.local"]
-                }
+                headers : {
+                        "Authorization" : this.$auth.$storage._state["_token.local"],
+                        "user_id" : this.$auth.$state.user.id
+                },
             })
 
             const list = [];
