@@ -1,5 +1,5 @@
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity,  JoinColumn,  ManyToOne,  OneToMany,  OneToOne,  PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity,  JoinColumn,  ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
 
 
@@ -18,6 +18,6 @@ export class Swipe {
     user_2!: User
 
     @Column({default: false})
-    isMatched!: boolean;
+    isMatched?: boolean;
 
 }

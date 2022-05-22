@@ -22,7 +22,7 @@ import { SwipeModule } from './swipe/swipe.module';
     autoLoadEntities: true,
     synchronize: true
   }),UsersModule, AuthModule, SwipeModule],
-  controllers: [AppController, SwipeController],
-  providers: [AppService, SwipeService],
+  controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
