@@ -5,9 +5,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
-import { SwipeController } from './swipe/swipe.controller';
-import { SwipeService } from './swipe/swipe.service';
 import { SwipeModule } from './swipe/swipe.module';
+import { EventsGateway } from './gateway/events.gateway';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -23,6 +22,6 @@ import { SwipeModule } from './swipe/swipe.module';
     synchronize: true
   }),UsersModule, AuthModule, SwipeModule],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, EventsGateway],
 })
 export class AppModule {}
