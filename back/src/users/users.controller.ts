@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus, Headers } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus, Headers, ConsoleLogger } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -6,10 +6,14 @@ import { RolesGuard } from 'src/auth/security/roles.guard';
 import { Roles } from 'src/auth/security/roles.decorator';
 import { User, UserRole } from './entities/user.entity';
 import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { SwipeService } from 'src/swipe/swipe.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly swipeService: SwipeService
+    ) {}
 
   @ApiOperation({description: "Ajout d'un utilisateur en base de donnée"})
   @ApiCreatedResponse({
@@ -48,6 +52,7 @@ export class UsersController {
     return this.usersService.findAllPictureNeeds(id);
   }
 
+  /*
   @ApiOperation({description: "Affiche un utilisateur grace à son id"})
   @ApiNotFoundResponse({ description: "L'utilisateur n'a pas été trouvé"})
   @ApiOkResponse({
@@ -57,6 +62,17 @@ export class UsersController {
   @Get(':id')
   findOne(@Param('id') id: string): Promise<User> {
     return this.usersService.findOne(+id);
+  }*/
+
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
+  @Get('match')
+  async findMatched(@Headers('id') id : number): Promise<User[]>{
+
+      const ids = await this.swipeService.findUsersId(id)
+
+      return this.usersService.findAllWithIds(ids)
+
   }
 
 

@@ -40,6 +40,10 @@ export class UsersService {
     })
   }
 
+  findAllWithIds(ids : Array<number>) : Promise<User[]>{
+    return this.data.find({where : { id: In(ids) }})
+  }
+
   findOne(id: number): Promise<User> {
     return this.data.findOneOrFail(id).catch(e => {
       throw new NotFoundException(id);

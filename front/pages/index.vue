@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="w-full h-screen student-img-container" :style="{ backgroundImage: `url(${studentImg})`}">
+    <div class="w-full h-screen student-img-container"  :style="{ backgroundImage: `url(${studentImg})`}">
       <div class="background-black w-full h-screen flex items-center justify-center">
         <h1 class="text-white font-bold text-5xl">Bienvenue sur MHOST</h1>
       </div>

@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="flex">
+    <div class="flex bg-[#f8f8f8]">
         <UserSidebar />
         <UserSwipe />
     </div>

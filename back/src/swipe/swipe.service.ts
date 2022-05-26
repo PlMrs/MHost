@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Not, Repository } from 'typeorm';
 import { threadId } from 'worker_threads';
 import { CreateSwipeDto } from './dto/create-swipe.dto';
 import { Swipe } from './entities/swipe.entity';
@@ -24,6 +24,29 @@ export class SwipeService {
             {user_1 : user_1, user_2 : user_2},
             {user_1 : user_2, user_2 : user_1}
         ]})
+    }
+
+    async findUsersId(id: number): Promise<Array<number>> {
+        const usersId = await this.data.find({
+            select : ["user_1","user_2"],
+            where : [
+              {user_1 : id, user_2: Not(id), isMatched:true},
+              {user_2 : id, user_1: Not(id), isMatched:true},
+            ]
+          })
+    
+          let ids = []
+    
+          usersId.forEach(e=>{
+            if(Number(e.user_1) != id){
+              ids.push(e.user_1)
+            }
+            if(Number(e.user_2) != id){
+              ids.push(e.user_2)
+            }
+          })
+    
+        return ids
     }
 
     async update(id:number, dto: UpdateSwipeDto): Promise<Swipe>{

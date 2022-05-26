@@ -1,5 +1,5 @@
 <template lang="">
-    <div style="padding-top: 100px">
+    <div>
         <div v-if="checkAdmin">
           <AdminDashboard />
         <p>{{checkAdmin}}</p>

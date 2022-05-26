@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="w-2/3">
+    <div class="w-[80%] flex justify-center items-center">
         <div class="w-fit" v-show="!isSwipeEmpty">
             <Tinder ref="tinder" key-name="id" :queue.sync="queue" :offset-y="10" @submit="onSubmit">
                 <div class="imgContainer relative" slot-scope="scope">
@@ -41,7 +41,7 @@ export default {
     },
     methods: {
         async mock(count = 5, append = true) {
-
+            console.log(this.$auth)
             const res = await this.$axios.$get(`${process.env.API_URL}/users/swipe`,{
                 headers : {
                         "Authorization" : this.$auth.$storage._state["_token.local"],
