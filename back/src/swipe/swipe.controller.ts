@@ -1,4 +1,4 @@
-import { Controller, Post, Body, UseGuards } from '@nestjs/common';
+import { Controller, Post, Body, UseGuards, Get, Headers } from '@nestjs/common';
 import {SwipeService} from './swipe.service'
 import { CreateSwipeDto } from './dto/create-swipe.dto';
 import { Swipe } from './entities/swipe.entity';
@@ -32,6 +32,13 @@ export class SwipeController {
 
     async update(id:number,dto: UpdateSwipeDto): Promise<Swipe>{
         return this.SwipeService.update(id,dto)
+    }
+
+    @UseGuards(RolesGuard)
+    @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
+    @Get('id-with-users')
+    findId(@Headers("user_1") user_1: number, @Headers("user_2") user_2 : number): Promise<number>{
+        return this.SwipeService.findIdWithUsers(user_1,user_2)
     }
 
 

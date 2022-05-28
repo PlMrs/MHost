@@ -16,6 +16,10 @@ export class Messages {
     @Column()
     from : User
 
+    @Column()
+    message : string;
+
+    
     @ManyToOne(()=> Swipe, swipe => swipe.id)
     @JoinColumn({name: "match_id"})
     matchid!: Swipe
@@ -23,8 +27,5 @@ export class Messages {
     @ManyToOne(()=> User, user => user.id)
     @JoinColumn({name: "from"})
     user_1id!: User
-
-    @Column()
-    message : string;
 
 }

@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { HttpException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Not, Repository } from 'typeorm';
 import { threadId } from 'worker_threads';
@@ -17,6 +17,17 @@ export class SwipeService {
 
     findOne(id: number) : Promise<Swipe>{
         return this.data.findOne(id)
+    }
+
+    async findIdWithUsers(user_1,user_2): Promise<number>{
+      const res = await this.data.findOne({where :[
+                      {user_1 : user_1, user_2 : user_2},
+                      {user_1 : user_2, user_2 : user_1}
+                  ]})
+      if(res){
+        return res.id
+      }
+      throw new NotFoundException()
     }
 
     checkSwipe(user_1 : User, user_2: User) : Promise<Swipe>{

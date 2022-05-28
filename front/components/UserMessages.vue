@@ -2,7 +2,7 @@
     <div class="w-[80%] relative">
         <ul>
             <li v-for="data in messages" class="py-2.5" :class="{reverse : data.isMe}" :key="data.value">
-                <div class="flex items-center  w-[50%]">
+                <div :class="{reverse : data.isMe}" class="flex items-center  w-[50%]">
                     <div class="w-[60px] h-[60px] rounded-[100%] flex justify-center items-center border border-[#213B83]">
                         <div class="w-[50px] h-[50px] rounded-[100%] overflow-hidden">
                             <img v-if="data.isMe" class="w-full h-full object-cover" :src="require(`~/assets/images/users/picture/${picture}`)" />
@@ -16,7 +16,7 @@
             </li>
         </ul>
         <div>
-            <form @submit.prevent="getMessage">
+            <form @submit.prevent="postMessage">
                 <input v-model="input" type="text">
                  <button>Envoyer</button>
             </form>            
@@ -33,9 +33,22 @@ export default {
         }
     },
     props: {
-        targetedUser : {}
+        targetedUser : {},
+        match_id: {
+            type: Number
+        }
     },
-    mounted () {
+    async mounted () {
+    const messages = await this.$axios.$get(`${process.env.API_URL}/messages`,{
+        headers : {
+             Authorization : this.$auth.$storage._state["_token.local"],
+             match_id : this.match_id
+        }
+    })
+    messages.forEach(el => {
+        this.messages = [...this.messages, {value : el.message, isMe : el.from === this.$auth.$state.user.id ? true : false}]
+    });
+
     this.socket = this.$nuxtSocket({
             path: '/socket.io',
             transports: ['websocket'],
@@ -54,25 +67,34 @@ export default {
     })
     },
     methods: {
-        getMessage (event) {
-            const payload = {
+        postMessage () {
+            const data = {
                 user_id : this.targetedUser.id,
                 message : this.input
             }
-            console.log(this.socket)
-            
-            this.socket.emit('message', payload, (resp) =>{
-                this.messages = [...this.messages, {value : this.input, isMe : true}]
-                console.log(this.messages)
-            });
 
-            //console.log(this.messages)
+            const payload = {
+                match_id : this.match_id,
+                from : this.$auth.$state.user.id,
+                message : this.input 
+            }
+            
+            this.socket.emit('message', data);
+
+            this.$axios.$post(`${process.env.API_URL}/messages`,payload,{
+                headers: {
+                    Authorization : this.$auth.$storage._state["_token.local"],
+                }
+            })
+
+            this.messages = [...this.messages, {value : this.input, isMe : true}]
         },
     },
 }
 </script>
 <style scoped>
     .reverse{
-        direction: rtl;
+        display:flex;
+        flex-direction: row-reverse;
     }
 </style>
