@@ -37,11 +37,11 @@ export default {
         isDescShow : false
     }),
     created() {
+        //console.log(this.$auth)
         this.mock()
     },
     methods: {
         async mock(count = 5, append = true) {
-            console.log(this.$auth)
             const res = await this.$axios.$get(`${process.env.API_URL}/users/swipe`,{
                 headers : {
                         "Authorization" : this.$auth.$storage._state["_token.local"],
@@ -83,7 +83,7 @@ export default {
                 }
             })
 
-            console.log(res)
+            this.$emit('user-swiped')
         }
 
         if (this.queue.length < 3) {

@@ -42,7 +42,8 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     '@nuxtjs/axios',
-    '@nuxtjs/auth'
+    '@nuxtjs/auth',
+    'nuxt-socket-io'
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -77,6 +78,15 @@ export default {
         home: '/dashboard'
       },
     }
+  },
+  io: {
+    sockets: [ // Required
+      { // At least one entry is required
+        name: 'home',
+        default : true,
+        url: 'http://localhost:3000',
+      }
+    ],
   }
   
 }

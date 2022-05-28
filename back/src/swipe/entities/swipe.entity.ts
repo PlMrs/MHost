@@ -1,5 +1,6 @@
+import { Messages } from "src/messages/entities/messages.entity";
 import { User } from "src/users/entities/user.entity";
-import { Column, Entity,  JoinColumn,  ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity,  JoinColumn,  ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 
 
@@ -7,6 +8,7 @@ import { Column, Entity,  JoinColumn,  ManyToOne, PrimaryGeneratedColumn } from 
 export class Swipe {
     
     @PrimaryGeneratedColumn()
+    @OneToMany(()=> Messages, message => message.match_id)
     id!: number;
 
 

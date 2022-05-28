@@ -67,7 +67,7 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
   @Get('match')
-  async findMatched(@Headers('id') id : number): Promise<User[]>{
+  async findMatched(@Headers('user_id') id : number): Promise<User[]>{
 
       const ids = await this.swipeService.findUsersId(id)
 

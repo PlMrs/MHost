@@ -7,6 +7,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { SwipeModule } from './swipe/swipe.module';
 import { EventsGateway } from './gateway/events.gateway';
+import { MessagesModule } from './messages/messages.module';
 
 @Module({
   imports: [ConfigModule.forRoot({
@@ -20,7 +21,7 @@ import { EventsGateway } from './gateway/events.gateway';
     database: process.env.DB_NAME,
     autoLoadEntities: true,
     synchronize: true
-  }),UsersModule, AuthModule, SwipeModule],
+  }),UsersModule, AuthModule, SwipeModule, MessagesModule],
   controllers: [AppController],
   providers: [AppService, EventsGateway],
 })
