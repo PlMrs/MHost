@@ -46,6 +46,10 @@ export class EventsGateway {
   handleMessage(@ConnectedSocket() socket: Socket,@MessageBody() payload: {user_id : number, message : string}) {
     const [user] = this.users.filter(e => e.user_id === payload.user_id)
 
+    if(!user){
+      return
+    }
+
     EventsGateway.LOGGER.log(`Sender ${socket.id} to ${user.socket_id} : ${payload.message}`)
     
     socket.to(user.socket_id).emit(CHANNEL.MESSAGE, payload.message)
@@ -54,7 +58,6 @@ export class EventsGateway {
   }
 
   handleDisconnect(socket: Socket){
-    console.log('patie')
     const newUsers = this.users.filter(e => e.user_id != Number(socket.handshake.query.me))
     this.users = newUsers
     const ip = socket.client.conn.remoteAddress;

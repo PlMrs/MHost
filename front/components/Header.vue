@@ -1,5 +1,5 @@
 <template lang="fr">
-    <header class="sticky w-full p-4 bg-white">
+    <header class="sticky w-full p-4 bg-white z-10">
         <nav v-if="$auth.loggedIn">
             <ul class="flex flex-row justify-between">
                 <li><NuxtLink to="/"><img class="w-[200px]" :src="require('~/assets/images/logo.png')" /></NuxtLink></li>
@@ -17,7 +17,10 @@
                     <div :class="{active : isActive}" class="relative hidden">
                         <ul class="absolute left-[-60px] bg-white p-[20px]">
                             <li>
-                                <NuxtLink to="/dashboard">Dashboard</NuxtLink>
+                                <p @click="moveTo('dashboard')" class="cursor-pointer">Dashboard</p>
+                            </li>
+                            <li>
+                                <p @click="moveTo('settings')" class="cursor-pointer">Paramètres</p>
                             </li>
                             <li class="cursor-pointer">
                                 <p @click="$auth.logout()">Déconnexion</p>
@@ -48,6 +51,16 @@ export default Vue.extend({
   methods : {
      changeActive(){
          this.isActive = !this.isActive
+     },
+     moveTo(where){
+         if(where === "settings"){
+            this.$store.commit('change', 'settings')
+            this.$router.push('/dashboard')
+         }
+         if(where === "dashboard"){
+            this.$store.commit('change', 'swipe')
+            this.$router.push('/dashboard')
+         }
      }
   },
   created() {

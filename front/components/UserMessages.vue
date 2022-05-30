@@ -1,24 +1,26 @@
 <template >
     <div class="w-[80%] relative">
-        <ul>
-            <li v-for="data in messages" class="py-2.5" :class="{reverse : data.isMe}" :key="data.value">
-                <div :class="{reverse : data.isMe}" class="flex items-center  w-[50%]">
-                    <div class="w-[60px] h-[60px] rounded-[100%] flex justify-center items-center border border-[#213B83]">
-                        <div class="w-[50px] h-[50px] rounded-[100%] overflow-hidden">
-                            <img v-if="data.isMe" class="w-full h-full object-cover" :src="require(`~/assets/images/users/picture/${picture}`)" />
-                            <img v-else class="w-full h-full object-cover" :src="require(`~/assets/images/users/picture/${targetedUser.picture}`)" />
+        <div class="h-[80%] overflow-auto flex flex-col-reverse hide-scrollbar px-4">
+            <ul>
+                <li v-for="data in messages" class="py-2.5" :class="{reverse : data.isMe}" :key="data.value">
+                    <div :class="{reverse : data.isMe}" class="flex items-center  w-[50%]">
+                        <div class="w-[60px] h-[60px] rounded-[100%] flex justify-center items-center border border-[#213B83]">
+                            <div class="w-[50px] h-[50px] rounded-[100%] overflow-hidden">
+                                <img v-if="data.isMe" class="w-full h-full object-cover" :src="require(`~/assets/images/users/picture/${picture}`)" />
+                                <img v-else class="w-full h-full object-cover" :src="require(`~/assets/images/users/picture/${targetedUser.picture}`)" />
+                            </div>
+                        </div> 
+                        <div :class="[data.isMe ? 'mr-[20px]'  : 'ml-[20px]']">
+                            <p>{{data.value}}</p>
                         </div>
-                    </div> 
-                    <div :class="[data.isMe ? 'mr-[20px]'  : 'ml-[20px]']">
-                        <p>{{data.value}}</p>
                     </div>
-                </div>
-            </li>
-        </ul>
-        <div>
-            <form @submit.prevent="postMessage">
-                <input v-model="input" type="text">
-                 <button>Envoyer</button>
+                </li>
+            </ul>
+        </div>
+        <div class="h-[20%] flex justify-center items-center">
+            <form @submit.prevent="postMessage" class="relative w-[90%]">
+                <input class="w-full rounded-full h-[30px] px-8" v-model="input" type="text" placeholder="Rédiger un message...">
+                 <button class="absolute right-3.5 top-1.5"><img class="w-[20px]" :src="require('~/assets/images/send-message.svg')"></button>
             </form>            
         </div>
     </div>
@@ -88,6 +90,8 @@ export default {
             })
 
             this.messages = [...this.messages, {value : this.input, isMe : true}]
+
+            this.input = ""
         },
     },
 }
@@ -97,4 +101,13 @@ export default {
         display:flex;
         flex-direction: row-reverse;
     }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none; 
+}
 </style>

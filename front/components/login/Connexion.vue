@@ -1,9 +1,9 @@
-<template lang="">
+<template>
      <form action="" id="login-app" @submit="submit" class="flex flex-col">
             <label for="email">E-mail</label>
             <input type="email" name="email" placeholder="email" v-model="email">
             <label for="mdp">Mot de passe</label>
-            <input type="text" name="mdp" placeholder="6 caractères minimum" v-model="mdp">
+            <input type="password" name="mdp" placeholder="6 caractères minimum" v-model="mdp">
             <button type="submit" name="submit">Envoyer</button>
      </form>
 </template>
@@ -12,17 +12,18 @@
     data() {
         return{
         email:null,
-        mdp:null}
+        mdp:null
+        }
     },
     methods: {
         async submit(event){
             event.preventDefault();
 
             try{
-                const mdp64 = `Basic ${Buffer.from(`${this.email}:${this.mdp}`).toString('base64')}`;
+                const credential = `Basic ${Buffer.from(`${this.email}:${this.mdp}`).toString('base64')}`;
                 const response = await this.$auth.loginWith('local',{
                     data:{
-                        "Authorization" : mdp64
+                        "Authorization" : credential
                     }
                 })
             }catch(e){
