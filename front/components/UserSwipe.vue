@@ -45,7 +45,8 @@ export default {
             const res = await this.$axios.$get(`${process.env.API_URL}/users/swipe`,{
                 headers : {
                         "Authorization" : this.$auth.$storage._state["_token.local"],
-                        "user_id" : this.$auth.$state.user.id
+                        "user_id" : this.$auth.$state.user.id,
+                        "needs" : this.$auth.$state.user.needs
                 },
             })
 
@@ -62,6 +63,9 @@ export default {
                 this.queue = this.queue.concat(list);
             } else {
                 this.queue.unshift(...list);
+            }
+            if(this.queue.length === 0){
+                this.isSwipeEmpty = true
             }
         },
         async onSubmit(type, key, item) {

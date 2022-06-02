@@ -4,9 +4,9 @@
             <ul class="flex flex-row justify-between">
                 <li><NuxtLink to="/"><img class="w-[200px]" :src="require('~/assets/images/logo.png')" /></NuxtLink></li>
                 <li class="w-[40%]"><div class="flex justify-between bg-[#002b80] rounded-full text-white">
-                        <div :class="{actual : host}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>J'Héberge</p></div>
-                        <div :class="{actual : travel}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>Je voyage</p></div>
-                        <div :class="{actual : discute}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>Je discute</p></div>
+                        <div :class="{actual : this.$auth.user.needs === 'H'}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>J'Héberge</p></div>
+                        <div :class="{actual : this.$auth.user.needs === 'T'}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>Je voyage</p></div>
+                        <div :class="{actual : this.$auth.user.needs === 'D'}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>Je discute</p></div>
                     </div>
                 </li>
                 <li><div class="w-[60px] h-[60px] rounded-[100%] flex justify-center items-center border border-[#213B83]" @click="changeActive()">
@@ -43,9 +43,6 @@ import Vue from 'vue';
 export default Vue.extend({
   name: 'Header',
   data: () => ({
-        discute: null,
-        host:null,
-        travel:null,
         isActive: false
   }),
   methods : {
@@ -62,17 +59,6 @@ export default Vue.extend({
             this.$router.push('/dashboard')
          }
      }
-  },
-  created() {
-      if(this.$auth.$state.user?.needs && this.$auth.$state.user?.needs === "D"){
-          this.discute = true
-      }
-      if(this.$auth.$state.user?.needs && this.$auth.$state.user?.needs === "T"){
-          this.travel = true
-      }
-      if(this.$auth.$state.user?.needs && this.$auth.$state.user?.needs === "H"){
-          this.host = true
-      }     
   }
 })
 </script>
