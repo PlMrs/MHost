@@ -1,3 +1,3 @@
 *.env
-front/assets/images/*
+front/assets/images/users/*
 !front/assets/images/users/picture/default.jpg
