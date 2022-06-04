@@ -1,6 +1,23 @@
 <template >
     <div class="w-[80%] relative">
-        <div class="h-[80%] overflow-auto flex flex-col-reverse hide-scrollbar px-4">
+        <div class="h-[20%] bg-white flex flex-row justify-between">
+            <div class="w-[80%] flex items-center">
+                <div class="ml-[20px] mr-[10px] w-[80px] h-[80px] rounded-[100%] flex justify-center items-center border border-[#213B83]">
+                    <div class="w-[70px] h-[70px] rounded-[100%] overflow-hidden">
+                        <img class="w-full h-full object-cover" :src="require(`~/assets/images/users/picture/${targetedUser.picture}`)" />
+                    </div>
+                </div> 
+                <div>
+                  <p>{{targetedUser.name}} {{targetedUser.surname}}</p>
+                  <p>{{needs}}</p>
+                </div>
+            </div>
+            <div class="w-[20%] flex flex-col items-center justify-center">
+                <button class="bg-[#F6C72B] text-white rounded-[5px] w-[80%] h-[34px] mt-[15px] mb-[7px]">Gérer l'amitié</button>
+                <button @click="showHost" class="bg-[#213B83] text-white rounded-[5px] w-[80%] h-[34px] mb-[15px] mt-[7px]">Demande de voyage</button>
+            </div>
+        </div>
+        <div class="h-[60%] overflow-auto flex flex-col-reverse hide-scrollbar px-4">
             <ul>
                 <li v-for="data in messages" class="py-2.5" :class="{reverse : data.isMe}" :key="data.value">
                     <div :class="{reverse : data.isMe}" class="flex items-center  w-[50%]">
@@ -23,15 +40,22 @@
                  <button class="absolute right-3.5 top-1.5"><img class="w-[20px]" :src="require('~/assets/images/send-message.svg')"></button>
             </form>            
         </div>
+        <div class="absolute top-[10%] left-[33%]">
+            <HostQuery v-show="isHostOpen" @close-host="showHost" :targetedUser="targetedUser" />
+        </div>
     </div>
 </template>
 <script>
+import HostQuery from '~/components/form/HostQuery.vue'
+
 export default {
+    components: {HostQuery},
     data () {
         return {
             input : "",
             messages : [],
-            picture : this.$auth.$state.user.picture
+            picture : this.$auth.$state.user.picture,
+            isHostOpen: false
         }
     },
     props: {
@@ -41,32 +65,32 @@ export default {
         }
     },
     async mounted () {
-    const messages = await this.$axios.$get(`${process.env.API_URL}/messages`,{
-        headers : {
-             Authorization : this.$auth.$storage._state["_token.local"],
-             match_id : this.match_id
-        }
-    })
-    messages.forEach(el => {
-        this.messages = [...this.messages, {value : el.message, isMe : el.from === this.$auth.$state.user.id ? true : false}]
-    });
-
-    this.socket = this.$nuxtSocket({
-            path: '/socket.io',
-            transports: ['websocket'],
-            reconnection : true,
-            auth: {
-                token: this.$auth.$storage._state["_token.local"]
-            },
-            query : {
-                me : this.$auth.$state.user.id,
-
+        const messages = await this.$axios.$get(`${process.env.API_URL}/messages`,{
+            headers : {
+                Authorization : this.$auth.$storage._state["_token.local"],
+                match_id : this.match_id
             }
         })
-    this.socket.on('message', (data) =>{
-        this.messages = [...this.messages, {value : data, isMe:false}]
-        console.log(this.messages)
-    })
+        messages.forEach(el => {
+            this.messages = [...this.messages, {value : el.message, isMe : el.from === this.$auth.$state.user.id ? true : false}]
+        });
+
+        this.socket = this.$nuxtSocket({
+                path: '/socket.io',
+                transports: ['websocket'],
+                reconnection : true,
+                auth: {
+                    token: this.$auth.$storage._state["_token.local"]
+                },
+                query : {
+                    me : this.$auth.$state.user.id,
+
+                }
+        })
+        this.socket.on('message', (data) =>{
+            this.messages = [...this.messages, {value : data, isMe:false}]
+            console.log(this.messages)
+        })
     },
     methods: {
         postMessage () {
@@ -93,7 +117,23 @@ export default {
 
             this.input = ""
         },
+        showHost(){
+            this.isHostOpen = !this.isHostOpen
+        }
     },
+    computed : {
+        needs(){
+            if(this.targetedUser.needs === "H"){
+                return "Peut héberger"
+            }
+            if(this.targetedUser.needs === "T"){
+                return "Veut voyager"
+            }
+            else{
+                return "Veut discuter"
+            }
+        }
+    }
 }
 </script>
 <style scoped>

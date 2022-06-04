@@ -11,7 +11,7 @@
             <input type="text" />
 
             <ul>
-                <li v-for="user in users" @click="openMessage(user)" class="flex justify-evenly items-center my-3 cursor-pointer"><div class="w-[60px] h-[60px] rounded-[100%] flex justify-center items-center border border-[#213B83]"><div class="w-[50px] h-[50px] rounded-[100%] overflow-hidden"><img class="w-full h-full object-cover" :src="require(`~/assets/images/users/picture/${user.picture}`)" /></div></div><p>{{`${user.description.substring(0, 20)}...`}}</p></li>
+                <li v-for="user in users" @click="openMessage(user)" class="flex justify-evenly items-center my-3 cursor-pointer"><div class="w-[60px] h-[60px] rounded-[100%] flex justify-center items-center border border-[#213B83]"><div class="w-[50px] h-[50px] rounded-[100%] overflow-hidden"><img class="w-full h-full object-cover" :src="require(`~/assets/images/users/picture/${user.picture}`)" /></div></div><p>{{`${user.description ? user.description.substring(0, 20) : ''}...`}}</p></li>
             </ul>
         </div>
     </div>

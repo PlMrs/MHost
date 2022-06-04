@@ -1,5 +1,5 @@
 <template lang="">
-    <div class="flex bg-[#f8f8f8]">
+    <div style="height: calc(100vh - 92px);" class="flex bg-[#f8f8f8] overflow-hidden">
         <UserSidebar :users="users" :isMessage="isMessage" @open-message="openMessages('message',$event)" @open-swipe="openSwipe()" />
         <UserSwipe v-if="showed === 'swipe' " @user-swiped="getUsersMatched()" />
         <UserMessages v-if="showed === 'message'" :targetedUser ="user" :match_id="match_id" :key="user.id" />  

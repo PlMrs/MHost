@@ -45,6 +45,9 @@ export default Vue.extend({
   data: () => ({
         isActive: false
   }),
+  mounted(){
+      console.log(this.$auth)
+  },
   methods : {
      changeActive(){
          this.isActive = !this.isActive

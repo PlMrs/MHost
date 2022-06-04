@@ -82,7 +82,7 @@ Il est situé au nord de la ville, il est loin des circuits touristiques. Pourta
       <div class="Sec2">
           <div class="contentSec2">
               <div class="titleSec2">
-                  <img :src="require('~/assets/images/Picto2.png')"/>
+                  <img :src="require('~/assets/images/picto2.png')"/>
                   <h2>Rome</h2>
               </div>
           </div>

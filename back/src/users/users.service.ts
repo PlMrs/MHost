@@ -30,8 +30,8 @@ export class UsersService {
     array.push(id_user)
 
     const ids = await this.swipe.find({select : ["user_1","user_2"], where : [
-      {user_1 : id_user},
-      {user_2 : id_user}
+      {user_1 : id_user, isMatched: true},
+      {user_2 : id_user, isMatched: true}
     ]})
 
     ids.map(id => {
@@ -84,6 +84,10 @@ export class UsersService {
   }
 
   deletePicture(picture : string){
+    if(picture === "default.jpg"){
+      return;
+    }
+    
     const path = `../front/assets/images/users/picture/${picture}`
 
     try{
