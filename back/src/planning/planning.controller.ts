@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Headers, HttpStatus, Post, UseGuards } from '@nestjs/common';
 import { Roles } from 'src/auth/security/roles.decorator';
 import { RolesGuard } from 'src/auth/security/roles.guard';
+import { Verified } from 'src/auth/security/verified.decorator';
 import { UserRole } from 'src/users/entities/user.entity';
 import { CreatePlanningDto } from './dto/create-planning.dto';
 import { Planning } from './entities/planning.entity';
@@ -19,6 +20,7 @@ export class PlanningController {
 
     @UseGuards(RolesGuard)
     @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
+    @Verified()
     @Post()
     async create(@Body() dto: CreatePlanningDto): Promise<HttpStatus>{
         

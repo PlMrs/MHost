@@ -13,8 +13,21 @@ export class RolesGuard extends AuthGuard('jwt') {
     if (!err && user) {
       const role = user.role as UserRole;
       const roles = this.reflector.get<string[]>('roles', context.getHandler());
-      if (roles && roles.includes(role))
-        return user;
+      const verified = this.reflector.get<boolean>('verified', context.getHandler())
+      if((verified === true || verified === false) && roles){
+        if(user.verified === verified && roles.includes(role)){
+          return user;
+        }
+      }
+      else{
+        if (roles && roles.includes(role)){ 
+          return user;
+        }
+        if ((verified === true || verified === false) && user.verified === verified){
+          return user;
+        }
+      }
+
     }
     throw err || new UnauthorizedException();
   }

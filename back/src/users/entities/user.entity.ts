@@ -45,5 +45,8 @@ export class User {
     @Column({length: 255, nullable: true})
     description?: string;
 
+    @Column({default: false})
+    verified: boolean;
+
 
 }

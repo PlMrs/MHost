@@ -16,7 +16,8 @@ export class MyBearerStrategy extends PassportStrategy(Strategy){
         return {
             id: payload.id, // id de l'user en bdd
             role: payload.role,
-            email: payload.sub
+            email: payload.sub,
+            verified: payload.verified
         }
     }
 }
