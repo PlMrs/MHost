@@ -2,7 +2,6 @@
     <div>
         <div v-if="checkAdmin">
           <AdminDashboard />
-        <p>{{checkAdmin}}</p>
         </div>
         <div v-else>
           <UserDashboard />

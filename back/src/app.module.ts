@@ -1,8 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { SwipeModule } from './swipe/swipe.module';
@@ -23,7 +21,7 @@ import { PlanningModule } from './planning/planning.module';
     autoLoadEntities: true,
     synchronize: true
   }),UsersModule, AuthModule, SwipeModule, MessagesModule, PlanningModule],
-  controllers: [AppController],
-  providers: [AppService, EventsGateway],
+  controllers: [],
+  providers: [EventsGateway],
 })
 export class AppModule {}

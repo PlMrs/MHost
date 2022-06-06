@@ -8,7 +8,6 @@ import { User, UserRole } from './entities/user.entity';
 import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { SwipeService } from 'src/swipe/swipe.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Verified } from 'src/auth/security/verified.decorator';
 
 @Controller('users')
 export class UsersController {
@@ -42,7 +41,6 @@ export class UsersController {
   })
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN)
-  @Verified()
   @Get()
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
