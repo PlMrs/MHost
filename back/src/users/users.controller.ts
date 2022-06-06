@@ -111,8 +111,12 @@ export class UsersController {
   @ApiOperation({description: "Supprime un utilisateur grace à son id"})
   @ApiNotFoundResponse({ description: "L'utilisateur n'a pas été trouvé"})
   @ApiOkResponse({description: "L'utilisateur a été supprimé"})
-  @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.usersService.remove(+id);
+  @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @Delete()
+  async adminRemove(@Body() user: User): Promise<HttpStatus> {
+    this.usersService.remove(user)
+    this.usersService.deletePicture(user.picture)
+    return HttpStatus.OK
   }
 }

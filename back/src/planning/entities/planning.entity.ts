@@ -24,11 +24,11 @@ export class Planning {
     @Column({default: false})
     isValidated : Boolean;
 
-    @ManyToOne(()=> User, user => user.id)
+    @ManyToOne(()=> User, user => user.id,{onDelete: "CASCADE"})
     @JoinColumn({name: "by"})
     by_id!: User
 
-    @ManyToOne(()=> User, user => user.id)
+    @ManyToOne(()=> User, user => user.id, {onDelete: "CASCADE"})
     @JoinColumn({name: "with"})
     with_id!: User
 

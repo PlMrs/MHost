@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { unlinkSync } from 'fs';
 import { Swipe } from 'src/swipe/entities/swipe.entity';
-import { In, Not, Repository } from 'typeorm';
+import { DeleteResult, In, Not, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserRole } from './entities/user.entity';
@@ -79,8 +79,8 @@ export class UsersService {
     return this.data.update(id,updateUserDto);
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  remove(id : User): Promise<User>{
+    return this.data.remove(id)
   }
 
   deletePicture(picture : string){

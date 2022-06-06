@@ -18,11 +18,11 @@ export class Swipe {
     @Column()
     user_2 : User
 
-    @ManyToOne(()=> User, user => user.id)
+    @ManyToOne(()=> User, user => user.id, {onDelete: "CASCADE"})
     @JoinColumn({name: "user_1"})
     user_1id!: User
 
-    @ManyToOne(()=> User, user => user.id)
+    @ManyToOne(()=> User, user => user.id, {onDelete: "CASCADE"})
     @JoinColumn({name: "user_2"})
     user_2id!: User
 

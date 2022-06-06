@@ -20,11 +20,11 @@ export class Messages {
     message : string;
 
     
-    @ManyToOne(()=> Swipe, swipe => swipe.id)
+    @ManyToOne(()=> Swipe, swipe => swipe.id, {onDelete: "CASCADE"})
     @JoinColumn({name: "match_id"})
     matchid!: Swipe
 
-    @ManyToOne(()=> User, user => user.id)
+    @ManyToOne(()=> User, user => user.id, {onDelete: "CASCADE"})
     @JoinColumn({name: "from"})
     user_1id!: User
 
