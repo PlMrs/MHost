@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { unlinkSync } from 'fs';
 import { Swipe } from 'src/swipe/entities/swipe.entity';
-import { DeleteResult, In, Not, Repository } from 'typeorm';
+import { DeleteResult, In, IsNull, Not, Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User, UserRole } from './entities/user.entity';
@@ -96,5 +96,11 @@ export class UsersService {
     }catch(e){
       console.log(e)
     }
+  }
+
+  findNotVerified(){
+    return this.data.find({
+      where : {carte_id : Not(IsNull()),certificatScolaire: Not(IsNull()), verified: false}
+    })
   }
 }

@@ -1,3 +1,4 @@
 *.env
 front/assets/images/users/*
 !front/assets/images/users/picture/default.jpg
+server-storage/*

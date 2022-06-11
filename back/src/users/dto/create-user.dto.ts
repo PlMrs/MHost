@@ -28,4 +28,11 @@ export class CreateUserDto {
     
     @ApiProperty()
     picture : string
+
+    @ApiProperty()
+    carte_id ?: string
+
+    @ApiProperty()
+    certificatScolaire: string
+
 }

@@ -3,6 +3,18 @@
         <h1>Paramètres</h1>
         <div class="flex items-center justify-center flex-col">
             <div @click="show('picture')" class=" cursor-pointer w-[200px] h-[200px] rounded-[100%] flex justify-center items-center border border-[#213B83]"><div class="w-[180px] h-[180px] rounded-[100%] overflow-hidden"><img class="w-full h-full object-cover" :src="require(`~/assets/images/users/picture/${this.$auth.$state.user.picture}`)" /></div></div>
+            <p v-if="this.$auth.user.verified">Vérifié ✔️</p>
+            <p v-if="!this.$auth.user.verified && this.$auth.user.carte_id != null">En attente de vérification</p>
+            <p class="cursor-pointer" v-if="!this.$auth.user.verified && this.$auth.user.carte_id === null" @click="isVerifiedFormOpen = !isVerifiedFormOpen" >Non-Vérifié, cliquer pour faire la demande</p>
+            <div v-if="!this.$auth.user.verified && this.$auth.user.carte_id === null"  v-show="isVerifiedFormOpen">
+                <form class="flex flex-col" @submit.prevent="postVerifications()">
+                    <label for="carte_id">Carte d'identité</label>
+                    <input name="carte_id" ref="carte_id" type="file" accept=".jpg, .png, .jpeg, .pdf" title="carte d'identité" placeholder="carte d'identité" required>
+                    <label for="">Certificat scolaire</label>
+                    <input name="certificat_scolaire" ref="certificatScolaire" type="file" accept=".jpg, .png, .jpeg, .pdf" title="certificat scolaire" placeholder="certificat scolaire" required>
+                    <button type="submit">Envoyer</button>
+                </form>
+            </div>
             <div :class="{show : isPictureOpen}" ref="name_surname" class="bg-white w-fit absolute z-10 p-2.5 rounded-[5px] hidden">
                     <form class="flex flex-col items-center w-fit" @submit.prevent="updatePicture()">
                         <input class="my-3.5" type="file" ref="file" placeholder="Télécharger une image" @change="handleFileUpload()" />
@@ -69,6 +81,7 @@ export default {
             isPasswordOpen : false,
             isNeedsOpen : false,
             isPictureOpen : false,
+            isVerifiedFormOpen : false,
             userNeeds:null,
             options: [
                 {text : "Je veux héberger", value: "H"},
@@ -80,7 +93,9 @@ export default {
             email:null,
             password : null,
             confPassword : null,
-            file: ""
+            file: "",
+            certificatScolaire: "",
+            carte_id : ""
         }
     },
     mounted () {
@@ -165,6 +180,23 @@ export default {
                 this.isPasswordOpen = false
                 this.isNeedsOpen = false
             }
+        },
+        async postVerifications(){
+            let formData = new FormData();
+            console.log(this.$refs.carte_id.files[0])
+            formData.append('carte_id', this.$refs.carte_id.files[0]);
+            formData.append('certificatScolaire', this.$refs.certificatScolaire.files[0]);
+            console.log(formData.has('carte_id') && formData.has('certificatScolaire') )
+            const res = await this.$axios.$post(`/users/uploadVerifications`,formData,{
+                headers : {
+                    "Authorization" : this.$auth.$storage._state["_token.local"],
+                    'Content-Type': 'multipart/form-data'
+                }
+            })
+
+           if(res.affected === 1){
+
+           }
         }
     }
 }

@@ -60,7 +60,6 @@ export class EventsGateway {
   handleDisconnect(socket: Socket){
     const newUsers = this.users.filter(e => e.user_id != Number(socket.handshake.query.me))
     this.users = newUsers
-    const ip = socket.client.conn.remoteAddress;
     this.server.emit(CHANNEL.MESSAGE, `Déconnecté`)
   }
 }

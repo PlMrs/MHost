@@ -1,6 +1,7 @@
 <template lang="">
     <div class="flex flex-col justify-center items-center">
-        <h1>List Users</h1>
+        <p>Filtrer les utilisateurs</p>
+        <input class="border " type="text" v-model="filter" placeholder="" @change="filterUsers">
         <ul class="w-[70%]">
             <li class="flex flex-col items-center my-8" v-for="user in users" :key="user.id">
                 <div class="ml-[20px] mr-[10px] w-[80px] h-[80px] rounded-[100%] flex justify-center items-center border border-[#213B83]">
@@ -9,6 +10,7 @@
                     </div>
                 </div> 
                 <p class="text-[#213B83]"><span class="font-bold">{{user.name}}</span> {{user.surname}} - {{user.role === "A" ? "Administrateur" : "Client"}}</p>
+                <p>Role : {{user.role === "A" ? "Administrateur" : "Client"}}</p>
                 <p>Id: {{user.id}}</p>
                 <p>E-mail : {{user.email}}</p>
                 <p>{{need(user)}}</p>
@@ -26,7 +28,9 @@
 export default {
     data(){
         return{
-            users: []
+            defaultUsers :[],
+            users: [],
+            filter: ""
         }
     },
     async mounted(){
@@ -38,8 +42,12 @@ export default {
 
         if(res){
             res.forEach(el => {
+                if(el.id === this.$auth.user.id){
+                    return
+                }
                 el = {...el, input: ''}
                 this.users.push(el)
+                this.defaultUsers.push(el)
             });
         }
     },
@@ -70,6 +78,36 @@ export default {
                     this.users = this.users.filter(e => e.id != user.id )
                 }
             }
+        },
+        filterUsers(){
+         const filtered = this.defaultUsers.filter(user => {
+             if(user.id == this.filter){
+                return true
+             } 
+             if(user.email.toLowerCase().includes(this.filter.toLowerCase())){
+                return true
+             }
+             if(user.name.toLowerCase().includes(this.filter.toLowerCase())){
+                 return true
+             }
+             if(user.surname.toLowerCase().includes(this.filter.toLowerCase())){
+                 return true
+             }
+             if(user.description.toLowerCase().includes(this.filter.toLowerCase())){
+                 return true
+             }
+             if(user.needs.toLowerCase().includes(this.filter.toLowerCase())){
+                 return true
+             }
+             if(user.role.toLowerCase().includes(this.filter.toLowerCase())){
+                 return true
+             }
+             if(user.verified == this.filter){
+                 return true
+             }
+        }) 
+        this.users = filtered
+        console.log(filtered)  
         }
     }
 }

@@ -11,22 +11,7 @@ import { v4 as uuidv4 } from 'uuid';
 
 @Module({
   imports: [SwipeModule,TypeOrmModule.forFeature([User]),
-  MulterModule.register({
-    fileFilter: (req,file,callback)=>{
-      if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
-        return callback(new Error('Only image files are allowed!'), false);
-      }
-      callback(null, true);
-    },
-    storage : diskStorage({
-      destination : '../front/assets/images/users/picture',
-      filename : (req,file,callback) => {
-        const splited = file.originalname.split('.')
-        const ext = splited[splited.length - 1]
-        callback(null, `${uuidv4()}.${ext}`);
-      }
-    })
-  })
+  MulterModule.register({})
 ],
   controllers: [UsersController],
   providers: [UsersService,SwipeService]
