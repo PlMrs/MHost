@@ -52,8 +52,16 @@ export default {
             const text = type === 'carte_id' ? "Carte d'identité" : "Certificat scolaire"
             return `<a href="${process.env.API_URL}/users/files?bearer=${this.$auth.$storage._state["_token.local"].split(' ')[1]}&user_id=${user.id}&filename=${filename}">${text}</a>`
         },
-        validateUser(user){
-            
+        async validateUser(user){
+            if(user.input === "validé"){
+                const res = await this.$axios.$patch(`/users/verified/${user.id}`,{verified : true},{
+                    headers : this.$auth.$storage._state["_token.local"]
+                })
+                if(res && res.affected === 1){
+                    this.users = this.users.filter(e => e.id != user.id)
+                    this.defaultUsers = this.defaultUsers.filter(e => e.id != user.id)
+                }
+            }
         }
     }
 }

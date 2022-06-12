@@ -92,6 +92,13 @@ export class UsersController {
   }
 
   @UseGuards(RolesGuard)
+  @Roles(UserRole.ADMIN)
+  @Patch('verified/:id')
+  validateUser(@Param('id') id : number,@Body() updateUserDto: UpdateUserDto){
+    return this.usersService.update(+id, updateUserDto);
+  }
+
+  @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
   @Post('upload')
   @UseInterceptors(FileInterceptor('file',{

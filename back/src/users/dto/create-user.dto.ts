@@ -20,9 +20,6 @@ export class CreateUserDto {
     @IsNotEmpty()
     password!: string;
 
-   /* @ApiProperty({enum: UserRole})
-    role!: UserRole;*/
-
     @ApiProperty({enum: UserNeeds})
     needs?: UserNeeds;
     
