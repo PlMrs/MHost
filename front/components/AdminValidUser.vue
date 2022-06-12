@@ -10,8 +10,12 @@
                 </div>
                 <p>{{user.name}} {{user.surname}}</p>
                 <p>{{user.email}}</p> 
-                <p v-html="getCarteIdLink(user, 'carte_id')"></p>
-                <p v-html="getCarteIdLink(user, 'certificatScolaire')"></p>
+                <p v-html="getLink(user, 'carte_id')"></p>
+                <p v-html="getLink(user, 'certificatScolaire')"></p>
+                  <form @submit.prevent="validateUser(user)">
+                    <input class="border rounded-md p-2" v-model="user.input" type="text" placeholder="taper validé">
+                    <button type="submit" class="text-[#07DF00] font-bold rounded-[5px] shadow p-2">Validé</button>
+                </form>
             </li>
         </ul>
     </div>
@@ -43,10 +47,13 @@ export default {
         }
     },
     methods : {
-        getCarteIdLink(user, type){
+        getLink(user, type){
             const filename =  type === 'carte_id' ? user.carte_id : user.certificatScolaire
             const text = type === 'carte_id' ? "Carte d'identité" : "Certificat scolaire"
             return `<a href="${process.env.API_URL}/users/files?bearer=${this.$auth.$storage._state["_token.local"].split(' ')[1]}&user_id=${user.id}&filename=${filename}">${text}</a>`
+        },
+        validateUser(user){
+            
         }
     }
 }

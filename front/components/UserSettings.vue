@@ -160,7 +160,6 @@ export default {
                 headers : {
                     "Authorization" : this.$auth.$storage._state["_token.local"],
                     'Content-Type': 'multipart/form-data',
-                    "user_id" : this.$auth.$state.user.id
                 }
             })
             this.$router.go()

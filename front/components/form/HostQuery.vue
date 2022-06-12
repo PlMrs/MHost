@@ -16,7 +16,7 @@
         </div>
         <div v-if="this.$auth.user.verified === false">
             <p>Vous n'avez pas le statut vérifié. Pour obtenir ce statut, merci de transmettre les documents demandé.</p>
-            <button>Demander à être vérifié</button>
+            <button @click="moveToSettings">Demander à être vérifié</button>
         </div>
         <div v-if="targetedUser.verified === false && this.$auth.user.verified === true">
             <p>Le correspondant ne possède pas le statut vérifié, vous ne pouvez pas encore effectuer de demandes d'hôte avec lui.</p>
@@ -86,6 +86,9 @@ export default {
             if(res === 201){
                 this.isPosted = !this.isPosted
             }
+        },
+        moveToSettings(){
+            this.$store.commit('change', 'settings')
         }
     }
 }

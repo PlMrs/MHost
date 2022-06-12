@@ -27,8 +27,7 @@ export default {
         async getUsersMatched(){
             this.users = await this.$axios.$get(`${process.env.API_URL}/users/match`, {
                 headers : {
-                    "Authorization" : this.$auth.$storage._state["_token.local"],
-                    "user_id" : this.$auth.$state.user.id
+                    "Authorization" : this.$auth.$storage._state["_token.local"]
                 }
             })  
         },
@@ -37,7 +36,6 @@ export default {
             this.match_id = await this.$axios.$get(`${process.env.API_URL}/swipe/id-with-users`,{
                 headers:{
                     Authorization : this.$auth.$storage._state["_token.local"],
-                    user_1 : this.$auth.$state.user.id,
                     user_2 : user.id
                 }
             })

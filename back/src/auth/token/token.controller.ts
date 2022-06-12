@@ -2,8 +2,7 @@ import { Body, Controller, Get, Headers, HttpException, HttpStatus, Post, Unauth
 
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
-import { JwtService, JwtSignOptions } from '@nestjs/jwt';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from 'src/auth/token/dto/signin-user.dto';
 import { ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { User, UserRole } from 'src/users/entities/user.entity';

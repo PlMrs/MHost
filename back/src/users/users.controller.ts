@@ -63,7 +63,9 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
   @Get('match')
-  async findMatched(@Headers('user_id') id : number): Promise<User[]>{
+  async findMatched(@Headers('Authorization') token : string): Promise<User[]>{
+
+      const {id} : any = jwts.decode(token.split(' ')[1])
 
       const ids = await this.swipeService.findUsersId(id)
 
@@ -81,8 +83,12 @@ export class UsersController {
     type: User,
   })
   @Patch(':id')
-  update(@Param('id') id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.update(+id, updateUserDto);
+  update(@Param('id') id: number,@Headers('Authorization') token : string,@Body() updateUserDto: UpdateUserDto) {
+    const {id : token_id}: any = jwts.decode(token.split(' ')[1])
+    if(id === token_id){
+      return this.usersService.update(+id, updateUserDto);
+    }
+    throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
   }
 
   @UseGuards(RolesGuard)
@@ -104,7 +110,9 @@ export class UsersController {
       }
     })
   }))
-  async uploadFile(@Headers("user_id") id : number,@UploadedFile() file: Express.Multer.File) {
+  async uploadFile(@Headers("Authorization") token : string,@UploadedFile() file: Express.Multer.File) {
+
+    const {id}: any = jwts.decode(token.split(' ')[1])
 
     const user = await this.usersService.findOne(id)
 

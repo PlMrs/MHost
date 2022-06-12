@@ -6,6 +6,9 @@ import { UpdateSwipeDto } from './dto/update-swipe.dto';
 import { RolesGuard } from 'src/auth/security/roles.guard';
 import { Roles } from 'src/auth/security/roles.decorator';
 import { UserRole } from 'src/users/entities/user.entity';
+import { JwtService } from '@nestjs/jwt';
+
+const jwts = new JwtService({secret : process.env.JWT_SECRET})
 
 @Controller('swipe')
 export class SwipeController {
@@ -37,7 +40,8 @@ export class SwipeController {
     @UseGuards(RolesGuard)
     @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
     @Get('id-with-users')
-    findId(@Headers("user_1") user_1: number, @Headers("user_2") user_2 : number): Promise<number>{
+    findId(@Headers("Authorization") token: string, @Headers("user_2") user_2 : number): Promise<number>{
+        const {id : user_1}: any = jwts.decode(token.split(' ')[1])
         return this.SwipeService.findIdWithUsers(user_1,user_2)
     }
 
