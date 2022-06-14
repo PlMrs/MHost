@@ -85,7 +85,7 @@ export class UsersController {
   @Patch(':id')
   update(@Param('id') id: number,@Headers('Authorization') token : string,@Body() updateUserDto: UpdateUserDto) {
     const {id : token_id}: any = jwts.decode(token.split(' ')[1])
-    if(id === token_id){
+    if(Number(id) === token_id){
       return this.usersService.update(+id, updateUserDto);
     }
     throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED)
