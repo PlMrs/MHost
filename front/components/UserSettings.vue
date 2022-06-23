@@ -42,6 +42,16 @@
                     </form>
                 </div>
             </div>
+            <div class="flex items-center relative justify-center my-3.5">
+                <p>{{this.description}}</p>
+                <button class="absolute right-[-33px]" @click="show('description')"><img class="w-[20px]" :src="require('~/assets/images/edit.svg')" alt=""></button>
+                <div :class="{show : isDescOpen}" ref="desc" class="bg-white w-fit absolute z-10 p-2.5 rounded-[5px] hidden">
+                    <form class="flex flex-col items-center w-fit" @submit.prevent="update({description: description})">
+                        <textarea name="desc" v-model="description" placeholder="description"></textarea>
+                        <button>Modifier</button>
+                    </form>
+                </div>
+            </div>
            <div class="flex items-center relative justify-center my-3.5"> 
                <p>Changer mon mot de passe</p>
                <button class="absolute right-[-33px]" @click="show('password')"><img class="w-[20px]" :src="require('~/assets/images/edit.svg')" alt=""></button>
@@ -82,6 +92,7 @@ export default {
             isNeedsOpen : false,
             isPictureOpen : false,
             isVerifiedFormOpen : false,
+            isDescOpen: false,
             userNeeds:null,
             options: [
                 {text : "Je veux héberger", value: "H"},
@@ -95,14 +106,16 @@ export default {
             confPassword : null,
             file: "",
             certificatScolaire: "",
-            carte_id : ""
+            carte_id : "",
+            description: ""
         }
     },
     mounted () {
         this.name = this.$auth.$state.user.name,
         this.surname = this.$auth.$state.user.surname,
         this.email = this.$auth.$state.user.email,
-        this.userNeeds = this.$auth.$state.user.needs
+        this.userNeeds = this.$auth.$state.user.needs,
+        this.description = this.$auth.$state.user.description
     },
     computed : {
         needs (){
@@ -173,6 +186,7 @@ export default {
             e === "password" ? this.isPasswordOpen = !this.isPasswordOpen : null
             e === "needs" ? this.isNeedsOpen = !this.isNeedsOpen : null
             e === "picture" ? this.isPictureOpen = !this.isPictureOpen : null
+            e === "description" ? this.isDescOpen = !this.isDescOpen : null
             if(e === "all"){
                 this.isNSOpen = false
                 this.isMailOpen = false

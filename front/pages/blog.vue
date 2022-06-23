@@ -12,7 +12,7 @@
         <img :src="require('~/assets/images/imgDrapEu.png')"/>
         <h4>Lorem ipsum</h4>
         <p>Il est temps de se réveiller, la crise du covid ne doit plus servir de prétexte à la destruction des scènes artistiques les plus créatives de France. L’avenir et l’attractivité de la coiffure en dépendent.</p>
-        <button><img :src="require('~/assets/images/pictoPlus.png')"/>EN SAVOIR PLUS</button>
+        <button><img :src="require('~/assets/images/pictoPlus.png')"/><NuxtLink to="/article">EN SAVOIR PLUS</NuxtLink></button>
       </div>
       <div class="article">
         <img :src="require('~/assets/images/imgDrapEu.png')"/>

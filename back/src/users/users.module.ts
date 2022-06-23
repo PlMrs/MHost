@@ -6,8 +6,6 @@ import { User } from './entities/user.entity';
 import { SwipeModule } from 'src/swipe/swipe.module';
 import { SwipeService } from 'src/swipe/swipe.service';
 import { MulterModule } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { v4 as uuidv4 } from 'uuid';
 
 @Module({
   imports: [SwipeModule,TypeOrmModule.forFeature([User]),

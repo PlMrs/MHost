@@ -4,7 +4,7 @@
   <div class="contentSec1" :style="{ backgroundImage: `url(${imgbanner})`}">
     <div class="rightBann">
     </div>
-    <div class="leftBann" :style="{ backgroundImage: `url(${logoFlesh})`}">
+    <div class="leftBann" :style="{ backgroundImage: `url(${leftImg})`}">
       <div class="txtBann">
         <h1>voyager <span>rencontrer</span> échanger</h1>
         <button><img :src="require('~/assets/images/pictoDécouvrirEu.png')"/> Découvrir l'europe</button>
@@ -12,18 +12,18 @@
     </div>
   </div>
   <!-- Section 2 -->
-  <div class="Sec2">
+ <div class="Sec2">
     <div class="contentSec2">
-      <div class="divSec2Left">
-        <h2>Lorem <span>ipsum</span> dolor sit amet </h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Facilisis mattis pellentesque non neque. Nisl mauris, mattis cras massa lectus et at a. 
-Suspendisse vel viverra fermentum pulvinar id interdum quisque id.</p>
-        <button><img :src="require('~/assets/images/pictoDécouvrirEu.png')"/>QUI SOMMES-NOUS ?</button>
+       <div class="txtSec2">
+         <h2>Qui <span>sommes</span> nous ?</h2>
+         <p>Mhost est une une application de rencontres et d'échanges entre étudiants à l'échelle Européenne.
+Notre équipe a pour but de favoriser ses échanges et de créer la meilleure expérience pour vous.</p>
+         <button>qui-sommes-nous ?</button>
+       </div>
+       <div class="imgSec2">
+         <img :src="require('~/assets/images/imgDrapEu.png')"/>
       </div>
-      <div class="divSec2Right">
-        <img :src="require('~/assets/images/imgDrapEu.png')"/>
-      </div>
-    </div>
+   </div>
   </div>
   <!-- Section 3 -->
   <div class="Sec3">
@@ -32,7 +32,7 @@ Suspendisse vel viverra fermentum pulvinar id interdum quisque id.</p>
         <img :src="require('~/assets/images/fleche2.png')"/>
       </div>
       <div>
-        <h2>LES DERNIERS ARTICLES</h2>
+        <h2><NuxtLink to="/blog">LES DERNIERS ARTICLES</NuxtLink></h2>
       </div>
       <div>
         <img :src="require('~/assets/images/fleche2.png')"/>
@@ -43,7 +43,7 @@ Suspendisse vel viverra fermentum pulvinar id interdum quisque id.</p>
         <img :src="require('~/assets/images/imgDrapEu.png')"/>
         <h4>Lorem ipsum</h4>
         <p>Il est temps de se réveiller, la crise du covid ne doit plus servir de prétexte à la destruction des scènes artistiques les plus créatives de France. L’avenir et l’attractivité de la coiffure en dépendent.</p>
-        <button><img :src="require('~/assets/images/pictoPlus.png')"/>EN SAVOIR PLUS</button>
+        <button><img :src="require('~/assets/images/pictoPlus.png')"/><NuxtLink to="/article">EN SAVOIR PLUS</NuxtLink></button>
       </div>
       <div class="article">
         <img :src="require('~/assets/images/imgDrapEu.png')"/>
@@ -170,118 +170,145 @@ export default {
 
 <style scoped>
 /* SECTION 1 */
-  .contentSec1{
-    height: 800px;
-    width: 100%;
-    background-size: cover;
-    background-repeat: no-repeat;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-  }
-  .rightBann{
-    height: 800px;
-    width: 50%;
-  }
-  .leftBann{
-    width: 50%;
-    background-color: #15192e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-size: 50%;
-    background-repeat: no-repeat;
-    background-position: center;
-    padding-bottom: 100px;
-  }
-  .txtBann{
-    margin-top: 100px;
-    color: white;
-    font-size: 2.5em;
-    width: 50%;
-    text-align: right;
-  } 
-  .txtBann h1{
-    font-family: 'montserrat';
-    font-weight: 900;
-    text-transform: uppercase;
-  }
-  .txtBann h1 span{
-    color: #F5C612;
-  }
-  .txtBann button{
-    font-family: 'Source Code Pro', monospace;
-    border: solid 1px;
-    border-color: white;
-    border-radius: 5px;
-    font-size: 16px;
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    padding: 10px;
-    width: 100%;
-    margin-top:50px;
-  }
-  .txtBann button img{
-    margin-right: 10px;
-  }
-  /* SECTION 2 */
-  .Sec2{
-    height: 600px;
-    width: 100%;
-    background-color: #15192e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .contentSec2{
-    width: 90%;
-    height: 415px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-  }
-  .divSec2Left{
-    width: 60%;
-    color: white;
-    padding-left: 10%;
-  }
-  .divSec2Left h2{
-    text-transform: uppercase;
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
-  }
-  .divSec2Left h2 span{
-    color: #F5C612;
-  }
-  .divSec2Left p{
-    font-size: 16px;
-    font-weight: 200;
-    width: 70%;
-  }
-  .divSec2Right{
-    width: 40%;
-  }
-  .divSec2Left button{
-    font-family: 'Source Code Pro', monospace;
-    border: solid 1px;
-    border-color: white;
-    border-radius: 5px;
-    font-size: 16px;
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
-    padding: 10px;
-    margin-top:50px;
-  }
-  .divSec2Left button img{
-    margin-right: 10px;
-  }
+.contentSec1{
+  height: 900px;
+  display: flex;
+  background-size: cover;
+}
+.rightBann{
+  width: 40%;
+}
+.leftBann{
+  height: 100%;
+  width: 60%;
+  background-size: cover;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  padding-right: 12%;
+}
+.txtBann{
+  color: white;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 3.5em;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  padding-left:60%;
+}
+.txtBann span{
+  color: #F5C612;
+}
+.txtBann button{
+  border: solid 1px;
+  border-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  font-size:20px;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+}
+.txtBann button img{
+  margin-right: 10px;
+}
+ /* SECTION 1 RESP */
+  @media (max-width: 1400px) {
+    .contentSec1{
+      flex-direction: column;
+      background-position: top;
+    }
+    .leftBann{
+      height: 30%;
+      width: 100%;
+      background-image: none;
+      background-color: #14182e;
+      justify-content: center;
+      padding: 0;
+      align-items: center;
+      justify-content: center;
+    }
+    .rightBann{
+      height: 70%;
+      width: 100%;
+    }
+    .txtBann{
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      font-size: 2em;
+      padding: 0;
+    }
+}
+/* SECTION 2 */
+.Sec2{
+  background-color: #14182e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+.contentSec2{
+  width: 75%;
+  display: flex;
+}
+.txtSec2{
+ color: white;
+ width: 50%;
+ display: flex;
+ justify-content: center;
+ align-items: flex-start;
+ flex-direction: column;
+ text-align: left;
+}
+.txtSec2 h2{
+ text-transform: uppercase;
+ font-size: 28px;
+ font-weight: bold;
+ margin-bottom: 20px;
+}
+.txtSec2 span{
+  color: #F5C612; 
+}
+.txtSec2 button{
+  border: solid 1px;
+  border-color: white;
+  border-radius: 5px;
+  padding: 10px;
+  font-size:16px;
+  text-transform: uppercase;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 20px;
+}
+.imgSec2{
+  width: 50%;
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
+}
+/* SECTION 2 RESP*/
+ @media (max-width: 1400px) {
+    .contentSec2{
+      flex-direction: column;
+    }
+    .txtSec2{
+      width: 100%;
+      margin-bottom: 50px;
+      align-items: center;
+      text-align: center;
+    }
+    .imgSec2{
+      width: 100%;
+    }
+}
+
   /* SECTION 3 */
   .Sec3{
     display: flex;

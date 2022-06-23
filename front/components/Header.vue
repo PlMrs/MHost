@@ -4,7 +4,7 @@
             <ul class="flex flex-row justify-between">
                 <li><NuxtLink to="/"><img class="w-[200px]" :src="require('~/assets/images/logo.png')" /></NuxtLink></li>
                 <li class="w-[40%]"><div class="flex justify-between bg-[#002b80] rounded-full text-white">
-                        <div :class="{actual : this.$auth.user.needs === 'H'}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>J'Héberge</p></div>
+                        <div :class="{actual : this.$auth.user.needs === 'H'}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>J'héberge</p></div>
                         <div :class="{actual : this.$auth.user.needs === 'T'}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>Je voyage</p></div>
                         <div :class="{actual : this.$auth.user.needs === 'D'}" class="py-[5px] w-1/3 text-2xl flex items-center rounded-full justify-center"><p>Je discute</p></div>
                     </div>

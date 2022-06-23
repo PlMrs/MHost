@@ -84,12 +84,10 @@ export default {
                 },
                 query : {
                     me : this.$auth.$state.user.id,
-
                 }
         })
         this.socket.on('message', (data) =>{
             this.messages = [...this.messages, {value : data, isMe:false}]
-            console.log(this.messages)
         })
     },
     methods: {

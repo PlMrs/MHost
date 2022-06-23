@@ -42,7 +42,7 @@ export default {
     },
     methods: {
         async mock(count = 5, append = true) {
-            const res = await this.$axios.$get(`${process.env.API_URL}/users/swipe`,{
+            const res = await this.$axios.$get(`/users/swipe`,{
                 headers : {
                         "Authorization" : this.$auth.$storage._state["_token.local"],
                         "user_id" : this.$auth.$state.user.id,

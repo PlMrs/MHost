@@ -26,7 +26,7 @@ export default {
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
     {src: '~/plugins/tinder.js', mode: 'client'},
-    { src: '~/plugins/v-calendar.js', ssr: false }
+    { src: '~/plugins/v-calendar.js', ssr: false },
   ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
@@ -44,7 +44,7 @@ export default {
   modules: [
     '@nuxtjs/axios',
     '@nuxtjs/auth',
-    'nuxt-socket-io'
+    'nuxt-socket-io',
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
@@ -88,6 +88,6 @@ export default {
         url: 'http://localhost:3000',
       }
     ],
-  }
+  },
   
 }

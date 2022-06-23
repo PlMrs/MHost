@@ -32,7 +32,6 @@ export class User {
     password !: string;
 
     @ApiProperty({enum: UserRole})
-    @Index()
     @Column({type:"enum", enum:UserRole, default: UserRole.CUSTOMER} )
     role!: UserRole;
 
