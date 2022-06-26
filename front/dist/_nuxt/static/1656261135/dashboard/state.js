@@ -1,0 +1,1 @@
+window.__NUXT__=(function(a){return {staticAssetsBase:"\u002F_nuxt\u002Fstatic\u002F1656261135",layout:"default",error:a,state:a,serverRendered:false,routePath:"\u002Fdashboard",config:{_app:{basePath:"\u002F",assetsPath:"\u002F_nuxt\u002F",cdnURL:a},nuxtSocketIO:{sockets:[{name:"home",default:true,url:"http:\u002F\u002Flocalhost:3000"}]}}}}(null));
