@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "cd front && npm i --production & cd back && npm i --production",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start" : "cd front && npm run start && cd back && npm run start",
+    "test": "echo \"Error: no test specified\" && exit 1" 
   },
   "repository": {
     "type": "git",
