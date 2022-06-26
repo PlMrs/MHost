@@ -13,6 +13,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { createReadStream, existsSync, mkdirSync } from 'fs';
 import { JwtService } from '@nestjs/jwt';
 import { Verified } from 'src/auth/security/verified.decorator';
+import * as bcrypt from 'bcryptjs';
 
 const jwts = new JwtService({secret : process.env.JWT_SECRET})
 
@@ -36,6 +37,9 @@ export class UsersController {
     if(isExisted){
       throw new HttpException('User already exist',HttpStatus.UNAUTHORIZED)
     }
+
+    const salt = await  bcrypt.genSalt(10);
+    dto.password = await bcrypt.hash(dto.password, salt);
 
     return this.usersService.create(dto);
   }

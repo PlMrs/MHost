@@ -1,0 +1,20 @@
+{
+  "name": "mhost",
+  "version": "1.0.0",
+  "description": "(Projet en cours de développement)",
+  "main": "index.js",
+  "scripts": {
+    "preinstall": "cd front && npm i --production & cd back && npm i --production",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/PlMrs/MHost.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/PlMrs/MHost/issues"
+  },
+  "homepage": "https://github.com/PlMrs/MHost#readme"
+}
