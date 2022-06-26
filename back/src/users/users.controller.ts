@@ -103,7 +103,7 @@ export class UsersController {
   @Post('upload')
   @UseInterceptors(FileInterceptor('file',{
     fileFilter: (req,file,callback)=>{
-      if (!file.originalname.match(/\.(jpg|jpeg|png)$/)) {
+      if (!file.originalname.match(/\.(jpg|jpeg|png|JPG|JPEG|PNG)$/)) {
         return callback(new Error('Only image files are allowed!'), false);
       }
       callback(null, true);
@@ -155,7 +155,7 @@ export class UsersController {
     ],
     {
       fileFilter: (req,file,callback)=>{
-        if (!file.originalname.match(/\.(jpg|jpeg|png|pdf)$/)) {
+        if (!file.originalname.match(/\.(jpg|jpeg|png|pdf|JPG|JPEG|PNG|PDF)$/)) {
           return callback(new Error('Only image files and pdf are allowed!'), false);
         }
         callback(null, true);

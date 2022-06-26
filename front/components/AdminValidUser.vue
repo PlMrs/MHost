@@ -14,7 +14,7 @@
                 <p v-html="getLink(user, 'certificatScolaire')"></p>
                   <form @submit.prevent="validateUser(user)">
                     <input class="border rounded-md p-2" v-model="user.input" type="text" placeholder="taper validé">
-                    <button type="submit" class="text-[#07DF00] font-bold rounded-[5px] shadow p-2">Validé</button>
+                    <button type="submit" class="text-[#07DF00] font-bold rounded-[5px] shadow p-2">Valider</button>
                 </form>
             </li>
         </ul>

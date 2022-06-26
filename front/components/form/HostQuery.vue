@@ -3,10 +3,10 @@
          <img @click="closeHost" class="absolute top-2 right-2 w-5 cursor-pointer" :src="require('~/assets/images/close.png')" />
         <div v-if="targetedUser.verified === true && this.$auth.user.verified === true">
             <div v-show="!isPosted">
-                <p class="font-bold text-center text-lg">Faire une demande d'hote</p>
+                <p class="font-bold text-center text-lg">Faire une demande d'hôte</p>
                 <form class="flex flex-col" @submit.prevent="postDemand">
                     <label for="planning" class="my-2 font-medium">De quand à quand?</label>
-                    <v-date-picker v-model="dates" :attributes="alreadyDates" :disabled-dates="disabledDates" is-range @dayclick="showDate"/>
+                    <v-date-picker v-model="dates" :attributes="alreadyDates" :min-date="new Date()" :disabled-dates="disabledDates" is-range @dayclick="showDate"/>
                     <button>Envoyer</button>
                 </form>
             </div> 

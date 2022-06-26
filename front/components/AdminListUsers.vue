@@ -16,8 +16,8 @@
                 <p>{{need(user)}}</p>
                 <p>{{user.verified === true ? "Vérifié" : "Non-vérifié" }}</p>
                 <p>Description : {{user.description}}</p>
-                <form @submit.prevent="deleteUser(user)">
-                    <input class="border rounded-md p-2" v-model="user.input" type="text" placeholder="taper supprimer">
+                <form class="mt-3" @submit.prevent="deleteUser(user)">
+                    <input class="border rounded-md p-2" v-model="user.input" type="text" placeholder="Taper supprimer">
                     <button type="submit" class="text-[#DE0000] font-bold rounded-[5px] shadow p-2">Supprimer</button>
                 </form>
             </li>

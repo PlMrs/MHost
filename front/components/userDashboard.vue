@@ -1,6 +1,6 @@
 <template lang="">
     <div style="height: calc(100vh - 92px);" class="flex bg-[#f8f8f8] overflow-hidden">
-        <UserSidebar :users="users" :isMessage="isMessage" @open-message="openMessages('message',$event)" @open-swipe="openSwipe()" />
+        <UserSidebar :users="users" @open-message="openMessages('message',$event)" @open-swipe="openSwipe()" />
         <UserSwipe v-if="showed === 'swipe' " @user-swiped="getUsersMatched()" />
         <UserMessages v-if="showed === 'message'" :targetedUser ="user" :match_id="match_id" :key="user.id" />  
         <UserSettings v-if="showed === 'settings'" />
@@ -11,7 +11,6 @@
 export default {
     data: () => ({
         users: [],
-        isMessage : false,
         user : null,
         match_id : null
     }),
@@ -41,14 +40,10 @@ export default {
             })
 
             this.$store.commit('change', type)
-           // this.showed = type
-           // type === "message" ? this.isMessage = true : this.isMessage = false
-
             this.user = user
         },
         openSwipe(){
             this.$store.commit('change', 'swipe')
-            //this.showed = "swipe"
         }
     }
 }

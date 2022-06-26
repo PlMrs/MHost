@@ -1,8 +1,8 @@
 <template lang="">
     <div class="w-[20%] sidebar bg-white h-full">
         <div class="flex flex-row items-center justify-center bg-[#f8f8f8]">
-            <div :class="{active : isMessage}" class="w-1/2 flex items-center justify-center"><img class="w-10 my-6" :src="require('~/assets/images/chat.png')" /></div>
-            <div @click="openSwipe()" :class="{active : !isMessage}" class="w-1/2 flex items-center justify-center cursor-pointer"><img class="w-10 my-6" :src="require('~/assets/images/swipe.png')" /></div>
+            <div :class="{active : showed === 'message'}" class="w-1/2 flex items-center justify-center"><img class="w-10 my-6" :src="require('~/assets/images/chat.png')" /></div>
+            <div @click="openSwipe()" :class="{active : showed !== 'message'}" class="w-1/2 flex items-center justify-center cursor-pointer"><img class="w-10 my-6" :src="require('~/assets/images/swipe.png')" /></div>
         </div>
         <div class="sidebar-shadow h-full">
 
@@ -21,9 +21,6 @@ export default {
     props: {
         users : {
             type: Array
-        },
-        isMessage: {
-            type: Boolean
         }
     },
     methods: {
@@ -37,6 +34,9 @@ export default {
     computed: {
         getNumberofMatch(){
             return this.users.length
+        },
+        showed () {
+            return this.$store.state.showed
         }
     }
 }
