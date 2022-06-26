@@ -4,7 +4,7 @@
   "description": "(Projet en cours de développement)",
   "main": "index.js",
   "scripts": {
-    "preinstall": "cd front && npm i & cd back && npm i",
+    "preinstall": "cd back && npm i",
     "start" : "cd front && npm run start && cd ../back && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1" 
   },
