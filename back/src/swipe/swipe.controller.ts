@@ -7,9 +7,11 @@ import { RolesGuard } from 'src/auth/security/roles.guard';
 import { Roles } from 'src/auth/security/roles.decorator';
 import { UserRole } from 'src/users/entities/user.entity';
 import { JwtService } from '@nestjs/jwt';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 const jwts = new JwtService({ secret: process.env.JWT_SECRET })
 
+@ApiBearerAuth()
 @Controller('swipe')
 export class SwipeController {
     constructor(private readonly SwipeService: SwipeService) { }

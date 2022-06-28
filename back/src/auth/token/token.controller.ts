@@ -4,10 +4,11 @@ import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
 import { SignInDto } from 'src/auth/token/dto/signin-user.dto';
-import { ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiHeader, ApiOkResponse, ApiOperation, ApiUnauthorizedResponse } from '@nestjs/swagger';
 import { User, UserRole } from 'src/users/entities/user.entity';
 import { RolesGuard } from '../security/roles.guard';
 import { Roles } from '../security/roles.decorator';
+import { ConnexionDto } from './dto/connexion.dto';
 
 @Controller('auth')
 export class TokenController {
@@ -22,6 +23,7 @@ export class TokenController {
         description: "Authentifié en tant qu'utilisateur",
         type: SignInDto
     })
+    @ApiBody({ type: ConnexionDto, description : "email et mot de passe encodés en base64 ( email:password ). Ajouter le préfix Basic dans la requette exemple : Basic \"mon email:mdp encodé\""})
     @Post('/token')
     async signIn(@Body("Authorization") auth : string) {
         let args = auth && auth.split(" ");

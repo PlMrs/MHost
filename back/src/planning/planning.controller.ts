@@ -1,4 +1,5 @@
 import { Body, Controller, Get, Headers, HttpStatus, Post, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { Roles } from 'src/auth/security/roles.decorator';
 import { RolesGuard } from 'src/auth/security/roles.guard';
 import { Verified } from 'src/auth/security/verified.decorator';
@@ -11,6 +12,7 @@ import { PlanningService } from './planning.service';
 export class PlanningController {
     constructor(private readonly planningService: PlanningService) {}
 
+    @ApiBearerAuth()
     @UseGuards(RolesGuard)
     @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
     @Get()

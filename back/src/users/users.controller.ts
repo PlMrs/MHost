@@ -5,7 +5,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { RolesGuard } from 'src/auth/security/roles.guard';
 import { Roles } from 'src/auth/security/roles.decorator';
 import { User, UserRole } from './entities/user.entity';
-import { ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiNotFoundResponse, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { SwipeService } from 'src/swipe/swipe.service';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -16,6 +16,7 @@ import { Verified } from 'src/auth/security/verified.decorator';
 
 const jwts = new JwtService({secret : process.env.JWT_SECRET})
 
+@ApiBearerAuth()
 @Controller('users')
 export class UsersController {
   constructor(
