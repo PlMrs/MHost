@@ -56,7 +56,10 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
   @Get('swipe')
-  findNotSwiped(@Headers('user_id') id: number,@Headers('needs') needs: string): Promise<User[]> {
+  findNotSwiped(@Headers('Authorization') token: string,@Headers('needs') needs: string): Promise<User[]> {
+
+    const {id} : any = jwts.decode(token.split(' ')[1])
+
     return this.usersService.findNotSwiped(id,needs);
   }
 

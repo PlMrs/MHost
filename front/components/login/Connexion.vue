@@ -16,12 +16,12 @@
         }
     },
     methods: {
-        async submit(event){
+        submit(event){
             event.preventDefault();
 
             try{
                 const credential = `Basic ${Buffer.from(`${this.email}:${this.mdp}`).toString('base64')}`;
-                const response = await this.$auth.loginWith('local',{
+                this.$auth.loginWith('local',{
                     data:{
                         "Authorization" : credential
                     }

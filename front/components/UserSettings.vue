@@ -82,140 +82,151 @@
     </div>
 </template>
 <script>
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from "bcryptjs";
 export default {
-    data(){
-        return {
-            isNSOpen : false,
-            isMailOpen : false,
-            isPasswordOpen : false,
-            isNeedsOpen : false,
-            isPictureOpen : false,
-            isVerifiedFormOpen : false,
-            isDescOpen: false,
-            userNeeds:null,
-            options: [
-                {text : "Je veux héberger", value: "H"},
-                {text : "Je veux voyager", value: "T"},
-                {text : "Je veux juste discuter", value: "D"}
-            ],
-            name:null,
-            surname:null,
-            email:null,
-            password : null,
-            confPassword : null,
-            file: "",
-            certificatScolaire: "",
-            carte_id : "",
-            description: ""
-        }
+    middleware: 'auth',
+  data() {
+    return {
+      isNSOpen: false,
+      isMailOpen: false,
+      isPasswordOpen: false,
+      isNeedsOpen: false,
+      isPictureOpen: false,
+      isVerifiedFormOpen: false,
+      isDescOpen: false,
+      userNeeds: null,
+      options: [
+        { text: "Je veux héberger", value: "H" },
+        { text: "Je veux voyager", value: "T" },
+        { text: "Je veux juste discuter", value: "D" },
+      ],
+      name: null,
+      surname: null,
+      email: null,
+      password: null,
+      confPassword: null,
+      file: "",
+      certificatScolaire: "",
+      carte_id: "",
+      description: "",
+    };
+  },
+  mounted() {
+    (this.name = this.$auth.$state.user.name),
+      (this.surname = this.$auth.$state.user.surname),
+      (this.email = this.$auth.$state.user.email),
+      (this.userNeeds = this.$auth.$state.user.needs),
+      (this.description = this.$auth.$state.user.description);
+  },
+  computed: {
+    needs() {
+      if (this.userNeeds === "T") {
+        return "voyager";
+      } else if (this.userNeeds === "H") {
+        return "héberger";
+      } else {
+        return "discuter";
+      }
     },
-    mounted () {
-        this.name = this.$auth.$state.user.name,
-        this.surname = this.$auth.$state.user.surname,
-        this.email = this.$auth.$state.user.email,
-        this.userNeeds = this.$auth.$state.user.needs,
-        this.description = this.$auth.$state.user.description
-    },
-    computed : {
-        needs (){
-            if(this.userNeeds === "T"){
-                return "voyager"
-            }
-            else if(this.userNeeds === "H"){
-                return "héberger"
-            }
-            else{
-                return "discuter"
-            }
+  },
+  methods: {
+    async update(payload) {
+      if (payload.password) {
+        if (payload.password != this.confPassword) {
+          return;
         }
-    },
-    methods : {
-        async update(payload){
-            if(payload.password){
-                if(payload.password != this.confPassword){
-                    return;
-                }
-                const salt =  bcrypt.genSaltSync(Number(process.env.BCRYPT_SALT))
-                const passwordHashed = bcrypt.hashSync(payload.password, salt);
-                payload.password = passwordHashed
-            }
-            const res = await this.$axios.$patch(`${process.env.API_URL}/users/${this.$auth.$state.user.id}`,payload,{
-                headers : {
-                        "Authorization" : this.$auth.$storage._state["_token.local"],
-                },
-            })
-
-            if(res.affected === 1){
-                if(payload.name) {
-                    this.name = payload.name
-                    this.$auth.setUser({...this.$auth.user, name : payload.name})
-                }
-                if(payload.surname) {
-                    this.surname = payload.surname 
-                    this.$auth.setUser({...this.$auth.user, surname : payload.surname})
-                }
-                if(payload.email){
-                    this.email = payload.email
-                    this.$auth.setUser({...this.$auth.user, email : payload.email})
-                    }
-                if(payload.needs) {
-                    this.userNeeds = payload.needs
-                    this.$auth.setUser({...this.$auth.user, needs : payload.needs})
-                    }
-                this.show('all')
-            }
-        },
-        updatePicture(){
-            let formData = new FormData();
-            formData.append('file', this.file);
-            this.$axios.$post(`/users/upload`,formData,{
-                headers : {
-                    "Authorization" : this.$auth.$storage._state["_token.local"],
-                    'Content-Type': 'multipart/form-data',
-                }
-            })
-            this.$router.go()
-        },
-        handleFileUpload(){
-            this.file = this.$refs.file.files[0];
-        },
-        show(e){
-            e === "NS" ? this.isNSOpen = !this.isNSOpen : null
-            e === "email" ? this.isMailOpen = !this.isMailOpen : null
-            e === "password" ? this.isPasswordOpen = !this.isPasswordOpen : null
-            e === "needs" ? this.isNeedsOpen = !this.isNeedsOpen : null
-            e === "picture" ? this.isPictureOpen = !this.isPictureOpen : null
-            e === "description" ? this.isDescOpen = !this.isDescOpen : null
-            if(e === "all"){
-                this.isNSOpen = false
-                this.isMailOpen = false
-                this.isPasswordOpen = false
-                this.isNeedsOpen = false
-            }
-        },
-        async postVerifications(){
-            let formData = new FormData();
-            console.log(this.$refs.carte_id.files[0])
-            formData.append('carte_id', this.$refs.carte_id.files[0]);
-            formData.append('certificatScolaire', this.$refs.certificatScolaire.files[0]);
-            console.log(formData.has('carte_id') && formData.has('certificatScolaire') )
-            const res = await this.$axios.$post(`/users/uploadVerifications`,formData,{
-                headers : {
-                    "Authorization" : this.$auth.$storage._state["_token.local"],
-                    'Content-Type': 'multipart/form-data'
-                }
-            })
-
-           if(res.affected === 1){
-
-           }
+        const salt = bcrypt.genSaltSync(Number(process.env.BCRYPT_SALT));
+        const passwordHashed = bcrypt.hashSync(payload.password, salt);
+        payload.password = passwordHashed;
+      }
+      const res = await this.$axios.$patch(
+        `${process.env.API_URL}/users/${this.$auth.$state.user.id}`,
+        payload,
+        {
+          headers: {
+            Authorization: this.$auth.$storage._state["_token.local"],
+          },
         }
-    }
-}
+      );
+
+      if (res.affected === 1) {
+        if (payload.name) {
+          this.name = payload.name;
+          this.$auth.setUser({ ...this.$auth.user, name: payload.name });
+        }
+        if (payload.surname) {
+          this.surname = payload.surname;
+          this.$auth.setUser({ ...this.$auth.user, surname: payload.surname });
+        }
+        if (payload.email) {
+          this.email = payload.email;
+          this.$auth.setUser({ ...this.$auth.user, email: payload.email });
+        }
+        if (payload.needs) {
+          this.userNeeds = payload.needs;
+          this.$auth.setUser({ ...this.$auth.user, needs: payload.needs });
+        }
+        this.show("all");
+      }
+    },
+    updatePicture() {
+      let formData = new FormData();
+      formData.append("file", this.file);
+      this.$axios.$post(`/users/upload`, formData, {
+        headers: {
+          Authorization: this.$auth.$storage._state["_token.local"],
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      this.$router.go();
+    },
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
+    },
+    show(e) {
+      e === "NS" ? (this.isNSOpen = !this.isNSOpen) : null;
+      e === "email" ? (this.isMailOpen = !this.isMailOpen) : null;
+      e === "password" ? (this.isPasswordOpen = !this.isPasswordOpen) : null;
+      e === "needs" ? (this.isNeedsOpen = !this.isNeedsOpen) : null;
+      e === "picture" ? (this.isPictureOpen = !this.isPictureOpen) : null;
+      e === "description" ? (this.isDescOpen = !this.isDescOpen) : null;
+      if (e === "all") {
+        this.isNSOpen = false;
+        this.isMailOpen = false;
+        this.isPasswordOpen = false;
+        this.isNeedsOpen = false;
+      }
+    },
+    async postVerifications() {
+      let formData = new FormData();
+      console.log(this.$refs.carte_id.files[0]);
+      formData.append("carte_id", this.$refs.carte_id.files[0]);
+      formData.append(
+        "certificatScolaire",
+        this.$refs.certificatScolaire.files[0]
+      );
+      console.log(
+        formData.has("carte_id") && formData.has("certificatScolaire")
+      );
+      const res = await this.$axios.$post(
+        `/users/uploadVerifications`,
+        formData,
+        {
+          headers: {
+            Authorization: this.$auth.$storage._state["_token.local"],
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (res.affected === 1) {
+      }
+    },
+  },
+};
 </script>
 <style scoped>
-    .show{
-        display:block !important;
-    }
+.show {
+  display: block !important;
+}
 </style>

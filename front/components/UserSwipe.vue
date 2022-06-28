@@ -37,15 +37,13 @@ export default {
         isDescShow : false
     }),
     created() {
-        //console.log(this.$auth)
         this.mock()
     },
     methods: {
         async mock(count = 5, append = true) {
-            const res = await this.$axios.$get(`/users/swipe`,{
+            const res = await this.$axios.$get('/users/swipe',{
                 headers : {
                         "Authorization" : this.$auth.$storage._state["_token.local"],
-                        "user_id" : this.$auth.$state.user.id,
                         "needs" : this.$auth.$state.user.needs
                 },
             })
@@ -80,7 +78,7 @@ export default {
 
         if(type.type === "like"){
 
-            const res = await this.$axios.$post(`${process.env.API_URL}/swipe`,swipeData,{
+            const res = await this.$axios.$post('/swipe',swipeData,{
                 headers : {
                     "Authorization" : this.$auth.$storage._state["_token.local"],
                     "Content-Type" : "application/json"

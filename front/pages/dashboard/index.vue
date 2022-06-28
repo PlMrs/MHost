@@ -11,7 +11,6 @@
 <script>
 export default {
   middleware: 'auth',
-
   computed: {
     checkAdmin() {
       if(this.$auth.$state.user.role === "A" && this.$auth.loggedIn){

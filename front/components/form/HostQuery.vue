@@ -19,7 +19,9 @@
             <button @click="moveToSettings">Demander à être vérifié</button>
         </div>
         <div v-if="targetedUser.verified === false && this.$auth.user.verified === true">
-            <p>Le correspondant ne possède pas le statut vérifié, vous ne pouvez pas encore effectuer de demandes d'hôte avec lui.</p>
+            <p>Le correspondant ne possède pas le statut vérifié, 
+               vous ne pouvez pas encore effectuer de demandes d'hôte avec lui.
+            </p>
         </div>
     </div>
 </template>
