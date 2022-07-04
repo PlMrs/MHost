@@ -5,6 +5,8 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "cd back && npm i",
+    "prebuild": "cd back && rimraf dist",
+    "build": "cd back && nest build",
     "start" : "cd back && npm run start:prod",
     "test": "echo \"Error: no test specified\" && exit 1" 
   },
@@ -16,6 +18,9 @@
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/PlMrs/MHost/issues"
+  },
+  "engines": {
+    "node": "16.13.2"
   },
   "homepage": "https://github.com/PlMrs/MHost#readme"
 }
