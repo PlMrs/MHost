@@ -5,7 +5,6 @@
   "main": "index.js",
   "scripts": {
     "preinstall": "cd back && npm i",
-    "build" : "cd back && npm run build",
     "start" : "cd back && npm run start:prod",
     "test": "echo \"Error: no test specified\" && exit 1" 
   },
