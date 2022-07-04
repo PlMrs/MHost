@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus, Headers, UseInterceptors, UploadedFile, UploadedFiles, StreamableFile, Response, Query } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, HttpException, HttpStatus, Headers, UseInterceptors, UploadedFile, UploadedFiles, StreamableFile, Response, Query, Request } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -29,15 +29,19 @@ export class UsersController {
     description: "Utilisateur ajouté avec succès",
     type: User,
   })
+  //Ajout d'un utilisateur en base de donnée
   @Post()
   async create(@Body() dto: CreateUserDto): Promise<User> {
     
-    const isExisted = await this.usersService.findByEmail(dto.email)
+    //Recherche de l'utilisateur grâce à son email
+    const exist = await this.usersService.findByEmail(dto.email)
 
-    if(isExisted){
+    //Si l'adresse e-mail est déjà prise, on arrête l'opération
+    if(exist){
       throw new HttpException('User already exist',HttpStatus.UNAUTHORIZED)
     }
 
+    //Ajout de l'utilisateur en base de donnée
     return this.usersService.create(dto);
   }
 
@@ -47,8 +51,11 @@ export class UsersController {
     description: "Tous les utilisateurs",
     type: [User],
   })
+  //Authentification par Jwt
   @UseGuards(RolesGuard)
+  //Qui peut avoir accès à la route
   @Roles(UserRole.ADMIN)
+  //Liste de tous les utilisateurs
   @Get()
   findAll(): Promise<User[]> {
     return this.usersService.findAll();
@@ -57,21 +64,23 @@ export class UsersController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
   @Get('swipe')
-  findNotSwiped(@Headers('Authorization') token: string,@Headers('needs') needs: string): Promise<User[]> {
+  async findNotSwiped(@Request() req: any,@Headers('needs') needs: string): Promise<User[]> {
 
-    const {id} : any = jwts.decode(token.split(' ')[1])
+    const {id} = req.user;
 
-    return this.usersService.findNotSwiped(id,needs);
+    const user_ids = await this.swipeService.findUsersMatched(id);
+
+    return this.usersService.findNotSwiped(id,needs,user_ids);
   }
 
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN, UserRole.CUSTOMER)
   @Get('match')
-  async findMatched(@Headers('Authorization') token : string): Promise<User[]>{
+  async findMatched(@Request() req: any): Promise<User[]>{
 
-      const {id} : any = jwts.decode(token.split(' ')[1])
+      const {id} : any = req.user
 
-      const ids = await this.swipeService.findUsersId(id)
+      const ids = await this.swipeService.findUsersMatched(id)
 
       return this.usersService.findAllWithIds(ids)
 
@@ -87,8 +96,10 @@ export class UsersController {
     type: User,
   })
   @Patch(':id')
-  update(@Param('id') id: number,@Headers('Authorization') token : string,@Body() updateUserDto: UpdateUserDto) {
-    const {id : token_id}: any = jwts.decode(token.split(' ')[1])
+  update(@Param('id') id: number,@Request() req: any,@Body() updateUserDto: UpdateUserDto) {
+
+    const {id : token_id} = req.user
+
     if(Number(id) === token_id){
       return this.usersService.update(+id, updateUserDto);
     }
@@ -121,9 +132,9 @@ export class UsersController {
       }
     })
   }))
-  async uploadFile(@Headers("Authorization") token : string,@UploadedFile() file: Express.Multer.File) {
+  async uploadFile(@Request() req: any,@UploadedFile() file: Express.Multer.File) {
 
-    const {id}: any = jwts.decode(token.split(' ')[1])
+    const {id} = req.user;
 
     const user = await this.usersService.findOne(id)
 
@@ -182,8 +193,10 @@ export class UsersController {
       }})
     }
   ))
-  async postVerifiedFiles(@Headers('Authorization') token: string,@UploadedFiles() files: { carte_id: Express.Multer.File[], certificatScolaire : Express.Multer.File[]   } ){
-    const {id}: any = jwts.decode(token.split(' ')[1])
+  async postVerifiedFiles(@Request() req: any,@UploadedFiles() files: { carte_id: Express.Multer.File[], certificatScolaire : Express.Multer.File[]   } ){
+    
+    const {id} = req.user
+
     const dto : UpdateUserDto = {carte_id : files.carte_id[0].filename, certificatScolaire : files.certificatScolaire[0].filename}
     return this.usersService.update(id,dto)
   }

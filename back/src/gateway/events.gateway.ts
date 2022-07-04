@@ -1,7 +1,7 @@
 import { Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConnectedSocket, MessageBody, SubscribeMessage, WebSocketGateway, WebSocketServer } from '@nestjs/websockets';
-import { Server, Socket } from 'socket.io';
+import { Socket } from 'socket.io';
 import { UserRole } from 'src/users/entities/user.entity';
 
 enum CHANNEL { MESSAGE = "message"};
@@ -11,10 +11,6 @@ export class EventsGateway {
 
   private static LOGGER : Logger = new Logger('Gateway')
   private static GRANT = [UserRole.CUSTOMER, UserRole.ADMIN]
-
-  @WebSocketServer()
-  private server : Server;
-
   private users : Array<{user_id:number,socket_id:string}> = []
 
   handleConnection(socket: Socket){
@@ -56,6 +52,7 @@ export class EventsGateway {
 
   @SubscribeMessage(CHANNEL.MESSAGE)
   handleMessage(@ConnectedSocket() socket: Socket,@MessageBody() payload: {user_id : number, message : string}) {
+
     const [user] = this.users.filter(e => e.user_id === payload.user_id)
 
     if(!user){
@@ -72,6 +69,5 @@ export class EventsGateway {
   handleDisconnect(socket: Socket){
     const newUsers = this.users.filter(e => e.user_id != Number(socket.handshake.query.me))
     this.users = newUsers
-    this.server.emit(CHANNEL.MESSAGE, `Déconnecté`)
   }
 }

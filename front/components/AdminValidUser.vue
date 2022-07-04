@@ -43,7 +43,6 @@ export default {
                 this.users.push(el)
                 this.defaultUsers.push(el)
             });
-            console.log(res)
         }
     },
     methods : {

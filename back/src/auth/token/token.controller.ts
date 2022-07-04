@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Headers, HttpException, HttpStatus, Post, UnauthorizedException, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Headers, HttpException, HttpStatus, Post, Request, UnauthorizedException, UseGuards } from '@nestjs/common';
 
 import { UsersService } from 'src/users/users.service';
 import * as bcrypt from 'bcryptjs';
@@ -60,17 +60,15 @@ export class TokenController {
   @UseGuards(RolesGuard)
   @Roles(UserRole.ADMIN,UserRole.CUSTOMER)
   @Get('/session')
-  async getSession(@Headers("Authorization") token : string): Promise<{user : User}>{
+  async getSession(@Request() req: any): Promise<{user : User}>{
 
-    const jwt = token.split(" ")[1]
+    const {id} = req.user
       
     try{
 
-        const {id} : any = this.jwts.verify(jwt, {secret : process.env.JWT_SECRET});
-
         const u = await this.users.findOne(id)
 
-        return { user : u}
+        return { user : u }
 
     }catch(e){
         return e

@@ -37,12 +37,12 @@ export class SwipeService {
         ]})
     }
 
-    async findUsersId(id: number): Promise<Array<number>> {
+    async findUsersMatched(id: number): Promise<Array<number>> {
         const usersId = await this.data.find({
             select : ["user_1","user_2"],
             where : [
-              {user_1 : id, user_2: Not(id), isMatched:true},
-              {user_2 : id, user_1: Not(id), isMatched:true},
+              {user_1 : id},
+              {user_2 : id, isMatched:true},
             ]
           })
     

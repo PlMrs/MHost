@@ -1,11 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Exclude } from "class-transformer";
 import { Swipe } from "src/swipe/entities/swipe.entity";
-import { Column, Entity, Index, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 export enum UserRole {ADMIN="A",CUSTOMER="C"}
-
-export enum UserNeeds {TRAVEL="T", HOST="H",DISCUTE="D", ALL="A"}
+export enum UserNeeds {TRAVEL="T", HOST="H",DISCUTE="D"}
 
 @Entity()
 export class User {
@@ -52,6 +51,4 @@ export class User {
 
     @Column({default: false})
     verified: boolean;
-
-
 }

@@ -185,17 +185,19 @@ export default {
   },
   methods: {
     postMessage() {
-      const data = {
-        user_id: this.targetedUser.id,
-        message: this.input,
-      };
-
       const payload = {
         match_id: this.match_id,
         from: this.$auth.$state.user.id,
         message: this.input,
       };
 
+      const data = {
+        //Id de l'utilisateur à qui envoyer un message
+        user_id: this.targetedUser.id,
+        // Message à envoyer
+        message: this.input, 
+      };
+      //Emission des données sur le canal message
       this.socket.emit("message", data);
 
       this.$axios.$post(`${process.env.API_URL}/messages`, payload, {
