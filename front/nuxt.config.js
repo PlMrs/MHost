@@ -57,7 +57,7 @@ export default {
     },
   },
   server: {
-    port: 8080,
+    port: process.env.PORT,
   },
   axios: {
     baseURL: 'http://localhost:3000'
