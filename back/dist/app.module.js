@@ -16,6 +16,7 @@ const swipe_module_1 = require("./swipe/swipe.module");
 const events_gateway_1 = require("./gateway/events.gateway");
 const messages_module_1 = require("./messages/messages.module");
 const planning_module_1 = require("./planning/planning.module");
+const app_controller_1 = require("./app.controller");
 let AppModule = class AppModule {
 };
 AppModule = __decorate([
@@ -32,7 +33,7 @@ AppModule = __decorate([
                 autoLoadEntities: true,
                 synchronize: true
             }), users_module_1.UsersModule, auth_module_1.AuthModule, swipe_module_1.SwipeModule, messages_module_1.MessagesModule, planning_module_1.PlanningModule],
-        controllers: [],
+        controllers: [app_controller_1.AppController],
         providers: [events_gateway_1.EventsGateway],
     })
 ], AppModule);
