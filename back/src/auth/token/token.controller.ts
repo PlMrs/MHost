@@ -32,7 +32,6 @@ export class TokenController {
             const email = credentials[0];
             const password = credentials[1];
             const user = await this.users.findByEmail(email);
-
             if(user && await bcrypt.compare(password, user.password)){
                 const cr = new SignInDto();
                 cr.grant_type = "password";

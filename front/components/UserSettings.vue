@@ -25,6 +25,7 @@
                 <p class="text-3xl font-bold">{{this.name}} {{this.surname}}</p>
                 <button class="absolute right-[-33px]" @click="show('NS')"><img class="w-[20px]" :src="require('~/assets/images/edit.svg')" alt=""></button>
                 <div :class="{show : isNSOpen}" ref="name_surname" class="bg-white w-fit absolute z-10 p-2.5 rounded-[5px] hidden">
+                  <img class="absolute top-3 right-3 w-[16px] cursor-pointer" :src="require('~/assets/images/close.png')" @click="show('NS')">
                     <form class="flex flex-col items-center w-fit" @submit.prevent="update({name:name,surname:surname})">
                         <input class="my-3.5" type="text" v-model="name" placeholder="Nom" />
                         <input class="my-3.5" type="text" v-model="surname" placeholder="Prénom" />
@@ -36,6 +37,7 @@
                 <p>{{this.email}}</p>
                 <button class="absolute right-[-33px]" @click="show('email')"><img class="w-[20px]" :src="require('~/assets/images/edit.svg')" alt=""></button>
                 <div :class="{show : isMailOpen}" ref="name_surname" class="bg-white w-fit absolute z-10 p-2.5 rounded-[5px] hidden">
+                    <img class="absolute top-3 right-3 w-[16px] cursor-pointer" :src="require('~/assets/images/close.png')" @click="show('email')">
                     <form class="flex flex-col items-center w-fit" @submit.prevent="update({email: email})">
                         <input class="my-3.5" type="email" v-model="email" placeholder="E-mail" />
                         <button>Modifier</button>
@@ -47,6 +49,7 @@
                 <button class="absolute right-[-33px]" @click="show('description')"><img class="w-[20px]" :src="require('~/assets/images/edit.svg')" alt=""></button>
                 <div :class="{show : isDescOpen}" ref="desc" class="bg-white w-fit absolute z-10 p-2.5 rounded-[5px] hidden">
                     <form class="flex flex-col items-center w-fit" @submit.prevent="update({description: description})">
+                        <img class="absolute top-3 right-3 w-[16px] cursor-pointer" :src="require('~/assets/images/close.png')" @click="show('description')">
                         <textarea name="desc" v-model="description" placeholder="description"></textarea>
                         <button>Modifier</button>
                     </form>
@@ -56,6 +59,7 @@
                <p>Changer mon mot de passe</p>
                <button class="absolute right-[-33px]" @click="show('password')"><img class="w-[20px]" :src="require('~/assets/images/edit.svg')" alt=""></button>
                 <div :class="{show : isPasswordOpen}" ref="name_surname" class="bg-white w-fit absolute z-10 p-2.5 rounded-[5px] hidden">
+                    <img class="absolute top-3 right-3 w-[16px] cursor-pointer" :src="require('~/assets/images/close.png')" @click="show('password')">
                     <form class="flex flex-col items-center w-fit" @submit.prevent="update({password:password})">
                         <input class="my-3.5" type="password" v-model="password" placeholder="Mot de passe" />
                         <input class="my-3.5" type="password" v-model="confPassword" placeholder="Confirmation du mot de passe" />
@@ -68,6 +72,7 @@
                 <button class="absolute right-[-33px]" @click="show('needs')"><img class="w-[20px]" :src="require('~/assets/images/edit.svg')" alt=""></button>
                 <div :class="{show : isNeedsOpen}" ref="name_surname" class="bg-white w-fit absolute z-10 p-2.5 rounded-[5px] hidden">
                     <form class="flex flex-col items-center w-fit" @submit.prevent="update({needs : userNeeds})">
+                        <img class="absolute top-3 right-3 w-[16px] cursor-pointer" :src="require('~/assets/images/close.png')" @click="show('needs')">
                         <select v-model="userNeeds">
                             <option disabled value="">Choisissez</option>
                               <option v-for="option in options" v-bind:value="option.value">
